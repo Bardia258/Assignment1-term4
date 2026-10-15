@@ -1,0 +1,16 @@
+@model AdminAccess
+@{
+    ViewData["Title"] = "Administration";
+}
+<h1>Municipal Elections Administration</h1>
+<dl class="row">
+    <dt class="col-sm-3">Username</dt>
+    <dd class="col-sm-9">@Model.Username</dd>
+    <dt class="col-sm-3">Administrator group</dt>
+    <dd class="col-sm-9">@Model.Role</dd>
+    <dt class="col-sm-3">Assigned municipality</dt>
+    <dd class="col-sm-9">@(Model.IsSuperAdmin ? "All municipalities (system-wide access)" : Model.MunicipalityName)</dd>
+</dl>
+<form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post">
+    <button type="submit" class="btn btn-outline-secondary">Log out</button>
+</form>
