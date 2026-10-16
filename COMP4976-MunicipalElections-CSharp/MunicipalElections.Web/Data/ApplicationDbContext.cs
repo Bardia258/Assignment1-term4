@@ -9,7 +9,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Municipality> Municipalities => Set<Municipality>();
     public DbSet<Position> Positions => Set<Position>();
     public DbSet<Candidate> Candidates => Set<Candidate>();
-    public DbSet<SavedCandidate> SavedCandidates => Set<SavedCandidate>();
     public DbSet<MunicipalityAdminGroup> MunicipalityAdminGroups => Set<MunicipalityAdminGroup>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -63,7 +62,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
             .HasForeignKey(c => c.MunicipalityId).OnDelete(DeleteBehavior.Restrict);
 
         // The composite FK rejects positions belonging to a different municipality,
-        // including writes from the future API or directly through SQLite.
+        // including writes through MVC forms or directly through SQLite.
         builder.Entity<Candidate>()
             .HasOne(c => c.Position).WithMany(p => p.Candidates)
             .HasForeignKey(c => new { c.PositionId, c.MunicipalityId })
@@ -73,16 +72,5 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         builder.Entity<ApplicationUser>()
             .HasOne(u => u.Municipality).WithMany()
             .HasForeignKey(u => u.MunicipalityId).OnDelete(DeleteBehavior.SetNull);
-
-        builder.Entity<SavedCandidate>()
-            .HasIndex(s => new { s.UserId, s.CandidateId }).IsUnique();
-
-        builder.Entity<SavedCandidate>()
-            .HasOne(s => s.User).WithMany(u => u.SavedCandidates)
-            .HasForeignKey(s => s.UserId).OnDelete(DeleteBehavior.Cascade);
-
-        builder.Entity<SavedCandidate>()
-            .HasOne(s => s.Candidate).WithMany(c => c.SavedCandidates)
-            .HasForeignKey(s => s.CandidateId).OnDelete(DeleteBehavior.Cascade);
     }
 }

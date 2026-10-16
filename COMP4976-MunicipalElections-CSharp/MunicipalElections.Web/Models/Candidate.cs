@@ -33,6 +33,4 @@ public class Candidate
 
     [ScaffoldColumn(false), StringLength(100)]
     public string? SeedKey { get; set; }
-
-    public ICollection<SavedCandidate> SavedCandidates { get; set; } = new List<SavedCandidate>();
 }

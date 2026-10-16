@@ -10,6 +10,7 @@
   <ItemGroup>
     <Content Remove="App_Data/**" />
     <None Remove="App_Data/**" />
+    <Content Update="appsettings.Development.json" CopyToPublishDirectory="Never" />
   </ItemGroup>
 
   <ItemGroup>

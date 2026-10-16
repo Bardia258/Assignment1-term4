@@ -1,5 +1,5 @@
 # =============================================
-# Municipal Elections — C#/.NET + SwiftUI iOS
+# COMP4976 - Municipal Elections Management System
 # Place this file in the Git repository root.
 # =============================================
 
@@ -53,9 +53,7 @@ TestResults/
 *.p12
 *.pem
 *.key
-*.mobileprovision
 *.cer
-*.p8
 
 # ----- Local SQLite databases -----
 # Commit EF Core migrations and seed code, not local database files.
@@ -72,20 +70,6 @@ TestResults/
 *.sqlite3-wal
 *.sqlite3-journal
 
-# ----- Xcode / Swift -----
-DerivedData/
-**/xcuserdata/
-*.xcuserstate
-*.xcscmblueprint
-*.xccheckout
-*.xcarchive
-*.ipa
-*.app/
-*.dSYM/
-*.dSYM.zip
-.build/
-.swiftpm/xcode/package.xcworkspace/xcuserdata/
-
 # ----- Operating systems / IDEs -----
 .DS_Store
 Thumbs.db
@@ -101,7 +85,10 @@ Desktop.ini
 *.temp
 
 # IMPORTANT: Keep these in Git:
-# *.sln / *.slnx, *.csproj, *.xcodeproj, *.xcworkspace,
-# Package.resolved, EF Core Migrations/, source files, docs/.
+# *.sln / *.slnx, *.csproj, EF Core Migrations/, source files, docs/.
 
 .README.md
+
+# Local uploaded images and Python test cache
+**/App_Data/uploads/
+**/__pycache__/

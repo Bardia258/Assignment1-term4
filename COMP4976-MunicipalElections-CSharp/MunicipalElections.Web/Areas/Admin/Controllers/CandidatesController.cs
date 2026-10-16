@@ -108,7 +108,7 @@ public sealed class CandidatesController(ApplicationDbContext db, AdminAccessSer
         var item = await Db.Candidates.Include(c => c.Municipality).Include(c => c.Position).SingleOrDefaultAsync(c => c.CandidateId == id);
         if (item is null) return NotFound();
         if (!await Access.CanManageCandidateAsync(User, id)) return Forbid();
-        Db.Remove(item); // Only this candidate's SavedCandidate links cascade.
+        Db.Remove(item);
         if (!await PersistAsync(item, revision, oldImage: item.PhotoFileName)) return View("Delete", item);
         return RedirectToAction(nameof(Index));
     }
@@ -116,7 +116,7 @@ public sealed class CandidatesController(ApplicationDbContext db, AdminAccessSer
     public async Task<IActionResult> PositionOptions(int municipalityId)
     {
         if (!await Access.CanManageMunicipalityAsync(User, municipalityId)) return Forbid();
-        // An MVC dropdown helper, not a Phase 5 REST API.
+        // Authorized MVC helper for the dependent position dropdown.
         return Json(await Db.Positions.AsNoTracking().Where(p => p.MunicipalityId == municipalityId)
             .OrderBy(p => p.Name).Select(p => new { id = p.PositionId, name = p.Name }).ToListAsync());
     }

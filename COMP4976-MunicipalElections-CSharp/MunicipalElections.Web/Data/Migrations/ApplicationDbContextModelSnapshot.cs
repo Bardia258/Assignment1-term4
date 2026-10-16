@@ -168,10 +168,6 @@ namespace MunicipalElections.Web.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("FullName")
-                        .HasMaxLength(200)
-                        .HasColumnType("TEXT");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("INTEGER");
 
@@ -388,32 +384,6 @@ namespace MunicipalElections.Web.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("MunicipalElections.Web.Models.SavedCandidate", b =>
-                {
-                    b.Property<int>("SavedCandidateId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("CandidateId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTime>("DateSaved")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("SavedCandidateId");
-
-                    b.HasIndex("CandidateId");
-
-                    b.HasIndex("UserId", "CandidateId")
-                        .IsUnique();
-
-                    b.ToTable("SavedCandidates");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -523,35 +493,6 @@ namespace MunicipalElections.Web.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Municipality");
-                });
-
-            modelBuilder.Entity("MunicipalElections.Web.Models.SavedCandidate", b =>
-                {
-                    b.HasOne("MunicipalElections.Web.Models.Candidate", "Candidate")
-                        .WithMany("SavedCandidates")
-                        .HasForeignKey("CandidateId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MunicipalElections.Web.Models.ApplicationUser", "User")
-                        .WithMany("SavedCandidates")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Candidate");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MunicipalElections.Web.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("SavedCandidates");
-                });
-
-            modelBuilder.Entity("MunicipalElections.Web.Models.Candidate", b =>
-                {
-                    b.Navigation("SavedCandidates");
                 });
 
             modelBuilder.Entity("MunicipalElections.Web.Models.Municipality", b =>
