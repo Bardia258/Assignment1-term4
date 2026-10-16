@@ -32,6 +32,19 @@ public static class IdentitySeeder
                 RequireSuccess(await roles.CreateAsync(new IdentityRole(role)), $"create role '{role}'");
         }
 
+        foreach (var (roleName, municipalityKey) in AdminRoles.MunicipalityGroups)
+        {
+            var municipalityId = await db.Municipalities.Where(m => m.SeedKey == municipalityKey)
+                .Select(m => m.MunicipalityId).SingleAsync();
+            var role = (await roles.FindByNameAsync(roleName))!;
+            var mapping = await db.MunicipalityAdminGroups.FindAsync(municipalityId);
+            if (mapping is null)
+                db.MunicipalityAdminGroups.Add(new MunicipalityAdminGroup { MunicipalityId = municipalityId, RoleId = role.Id });
+            else if (mapping.RoleId != role.Id)
+                throw new InvalidOperationException($"Administrator group mapping conflict for '{roleName}'.");
+        }
+        await db.SaveChangesAsync();
+
         var pittMeadowsId = await db.Municipalities.Where(m => m.SeedKey == "demo:pitt-meadows")
             .Select(m => m.MunicipalityId).SingleAsync();
         await SeedUserAsync("super", AdminRoles.SuperAdmin, null);

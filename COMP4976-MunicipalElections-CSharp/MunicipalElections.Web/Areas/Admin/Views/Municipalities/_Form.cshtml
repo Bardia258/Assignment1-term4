@@ -1,0 +1,9 @@
+@model MunicipalityInput
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+<input asp-for="Revision" type="hidden" />
+<div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name"></span></div>
+<div class="mb-3"><label asp-for="Province" class="form-label"></label><input asp-for="Province" class="form-control" /><span asp-validation-for="Province"></span></div>
+<div class="mb-3"><label asp-for="ElectionDate" class="form-label"></label><input asp-for="ElectionDate" class="form-control" /><span asp-validation-for="ElectionDate"></span></div>
+<div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" class="form-control" rows="4"></textarea><span asp-validation-for="Description"></span></div>
+@if (Images.Url(Model.CurrentImage, "logos") is string imageUrl) { <img src="@Url.Content("~" + imageUrl)" class="admin-preview mb-3" alt="Current municipality logo" /> }
+<div class="mb-3"><label asp-for="Image" class="form-label"></label><input asp-for="Image" type="file" class="form-control" accept="image/png,image/jpeg,image/webp" /><div class="form-text">PNG, JPEG, or WebP. Maximum 2 MB; optional. Upload a new image to replace the current one.</div><span asp-validation-for="Image"></span></div>

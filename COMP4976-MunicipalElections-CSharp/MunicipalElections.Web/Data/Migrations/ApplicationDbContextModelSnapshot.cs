@@ -255,6 +255,11 @@ namespace MunicipalElections.Web.Data.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Revision")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SeedKey")
                         .HasMaxLength(100)
                         .HasColumnType("TEXT");
@@ -296,11 +301,18 @@ namespace MunicipalElections.Web.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
 
                     b.Property<string>("Province")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
+                    b.Property<string>("Revision")
+                        .IsConcurrencyToken()
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SeedKey")
@@ -312,7 +324,27 @@ namespace MunicipalElections.Web.Data.Migrations
                     b.HasIndex("SeedKey")
                         .IsUnique();
 
+                    b.HasIndex("Name", "Province")
+                        .IsUnique();
+
                     b.ToTable("Municipalities");
+                });
+
+            modelBuilder.Entity("MunicipalElections.Web.Models.MunicipalityAdminGroup", b =>
+                {
+                    b.Property<int>("MunicipalityId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("MunicipalityId");
+
+                    b.HasIndex("RoleId")
+                        .IsUnique();
+
+                    b.ToTable("MunicipalityAdminGroups");
                 });
 
             modelBuilder.Entity("MunicipalElections.Web.Models.Position", b =>
@@ -327,6 +359,12 @@ namespace MunicipalElections.Web.Data.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
+                        .HasColumnType("TEXT")
+                        .UseCollation("NOCASE");
+
+                    b.Property<string>("Revision")
+                        .IsConcurrencyToken()
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SeatsAvailable")
@@ -338,9 +376,10 @@ namespace MunicipalElections.Web.Data.Migrations
 
                     b.HasKey("PositionId");
 
-                    b.HasIndex("MunicipalityId");
-
                     b.HasIndex("SeedKey")
+                        .IsUnique();
+
+                    b.HasIndex("MunicipalityId", "Name")
                         .IsUnique();
 
                     b.ToTable("Positions", t =>
@@ -454,6 +493,25 @@ namespace MunicipalElections.Web.Data.Migrations
                     b.Navigation("Municipality");
 
                     b.Navigation("Position");
+                });
+
+            modelBuilder.Entity("MunicipalElections.Web.Models.MunicipalityAdminGroup", b =>
+                {
+                    b.HasOne("MunicipalElections.Web.Models.Municipality", "Municipality")
+                        .WithMany()
+                        .HasForeignKey("MunicipalityId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Municipality");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("MunicipalElections.Web.Models.Position", b =>

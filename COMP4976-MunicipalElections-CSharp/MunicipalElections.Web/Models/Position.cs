@@ -6,6 +6,9 @@ public class Position
 {
     public int PositionId { get; set; }
 
+    [ConcurrencyCheck]
+    public string Revision { get; set; } = Guid.NewGuid().ToString("N");
+
     [Required, StringLength(100)]
     public string Name { get; set; } = string.Empty;
 

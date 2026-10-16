@@ -7,7 +7,8 @@ public static class AdminRoles
     public const string MapleRidgeAdmin = "Maple Ridge Admin";
     public const string BurnabyAdmin = "Burnaby Admin";
 
-    // Explicit mappings to immutable sample identifiers, never parsed display names or PKs.
+    // Development bootstrap names only. Runtime authorization uses persisted
+    // MunicipalityAdminGroups, including groups for dynamically created municipalities.
     public static IReadOnlyDictionary<string, string> MunicipalityGroups { get; } =
         new Dictionary<string, string>
         {

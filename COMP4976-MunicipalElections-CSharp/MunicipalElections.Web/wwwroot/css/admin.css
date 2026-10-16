@@ -1,0 +1,8 @@
+.admin-thumb { width: 64px; height: 64px; object-fit: cover; border-radius: .4rem; }
+.admin-preview { max-width: 240px; max-height: 240px; object-fit: contain; }
+.admin-form { max-width: 760px; }
+.biography { white-space: pre-wrap; overflow-wrap: anywhere; }
+.table td, .table th { vertical-align: middle; }
+.table .actions { min-width: 190px; }
+.field-validation-error, .validation-summary-errors { color: #b02a37; }
+.card { border: 0; box-shadow: 0 .125rem .4rem #00000012; }

@@ -29,9 +29,12 @@ public sealed class AdminAccessService(ApplicationDbContext db)
         var roles = await (from membership in db.UserRoles.AsNoTracking()
                            join role in db.Roles.AsNoTracking() on membership.RoleId equals role.Id
                            where membership.UserId == userId
-                           select role.Name).ToListAsync();
-        var municipalityRoles = roles.Where(r => r is not null && AdminRoles.MunicipalityGroups.ContainsKey(r)).ToList();
-        if (roles.Contains(AdminRoles.SuperAdmin))
+                           select new { role.Id, role.Name }).ToListAsync();
+        var roleIds = roles.Select(r => r.Id).ToList();
+        var municipalityRoles = await db.MunicipalityAdminGroups.AsNoTracking()
+            .Where(g => roleIds.Contains(g.RoleId))
+            .Select(g => new { g.MunicipalityId, g.Municipality.Name, RoleName = g.Role.Name }).ToListAsync();
+        if (roles.Any(r => r.Name == AdminRoles.SuperAdmin))
         {
             return user.MunicipalityId is null && municipalityRoles.Count == 0
                 ? new AdminAccess(user.UserName ?? string.Empty, AdminRoles.SuperAdmin, null, null)
@@ -39,13 +42,9 @@ public sealed class AdminAccessService(ApplicationDbContext db)
         }
 
         if (municipalityRoles.Count != 1 || user.MunicipalityId is null) return null;
-        var roleName = municipalityRoles[0]!;
-        var seedKey = AdminRoles.MunicipalityGroups[roleName];
-        var municipality = await db.Municipalities.AsNoTracking()
-            .Where(m => m.MunicipalityId == user.MunicipalityId && m.SeedKey == seedKey)
-            .Select(m => new { m.MunicipalityId, m.Name }).SingleOrDefaultAsync();
-        return municipality is null ? null
-            : new AdminAccess(user.UserName ?? string.Empty, roleName, municipality.MunicipalityId, municipality.Name);
+        var group = municipalityRoles[0];
+        return group.MunicipalityId != user.MunicipalityId ? null
+            : new AdminAccess(user.UserName ?? string.Empty, group.RoleName!, group.MunicipalityId, group.Name);
     }
 
     // This scopes positions/candidates. Municipality CREATE/EDIT/DELETE requires

@@ -1,16 +1,26 @@
-@model AdminAccess
+@model DashboardModel
 @{
     ViewData["Title"] = "Administration";
 }
 <h1>Municipal Elections Administration</h1>
 <dl class="row">
     <dt class="col-sm-3">Username</dt>
-    <dd class="col-sm-9">@Model.Username</dd>
+    <dd class="col-sm-9">@Model.Access.Username</dd>
     <dt class="col-sm-3">Administrator group</dt>
-    <dd class="col-sm-9">@Model.Role</dd>
+    <dd class="col-sm-9">@Model.Access.Role</dd>
     <dt class="col-sm-3">Assigned municipality</dt>
-    <dd class="col-sm-9">@(Model.IsSuperAdmin ? "All municipalities (system-wide access)" : Model.MunicipalityName)</dd>
+    <dd class="col-sm-9">@(Model.Access.IsSuperAdmin ? "All municipalities (system-wide access)" : Model.Access.MunicipalityName)</dd>
 </dl>
+<div class="row g-3 mb-4">
+    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><h2 class="h6 text-muted">Municipalities</h2><p id="municipality-count" class="display-6 mb-0">@Model.MunicipalityCount</p></div></div></div>
+    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><h2 class="h6 text-muted">Positions</h2><p id="position-count" class="display-6 mb-0">@Model.PositionCount</p></div></div></div>
+    <div class="col-sm-4"><div class="card h-100"><div class="card-body"><h2 class="h6 text-muted">Candidates</h2><p id="candidate-count" class="display-6 mb-0">@Model.CandidateCount</p></div></div></div>
+</div>
+<div class="d-flex flex-wrap gap-2 mb-4">
+    @if (Model.Access.IsSuperAdmin) { <a class="btn btn-primary" asp-controller="Municipalities" asp-action="Index">Manage municipalities</a> }
+    <a class="btn btn-primary" asp-controller="Positions" asp-action="Index">Manage positions</a>
+    <a class="btn btn-primary" asp-controller="Candidates" asp-action="Index">Manage candidates</a>
+</div>
 <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post">
     <button type="submit" class="btn btn-outline-secondary">Log out</button>
 </form>

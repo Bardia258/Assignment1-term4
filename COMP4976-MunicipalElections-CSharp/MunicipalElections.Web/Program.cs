@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using MunicipalElections.Web.Data;
 using MunicipalElections.Web.Models;
 using MunicipalElections.Web.Authorization;
+using MunicipalElections.Web.Services;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +20,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddAdminAuthorization();
+builder.Services.Configure<UploadOptions>(builder.Configuration.GetSection("Uploads"));
+builder.Services.AddScoped<IImageStorage, ImageStorage>();
 builder.Services.AddControllersWithViews(options => options.Conventions.Add(new AdminAreaAuthorizationConvention()));
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -65,6 +69,13 @@ else
 }
 
 app.UseHttpsRedirection();
+var uploadRoot = UploadOptions.ResolveRoot(builder.Configuration["Uploads:RootPath"] ?? "App_Data/uploads", app.Environment.ContentRootPath);
+Directory.CreateDirectory(uploadRoot);
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(uploadRoot), RequestPath = "/uploads",
+    OnPrepareResponse = context => context.Context.Response.Headers["X-Content-Type-Options"] = "nosniff"
+});
 app.UseRouting();
 
 app.UseAuthentication();
