@@ -1,24 +1,22 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using MunicipalElections.Web.Models;
+using MunicipalElections.Web.Services;
+using System.Threading.Tasks;
 
-namespace MunicipalElections.Web.Controllers;
-
-public class HomeController : Controller
+namespace MunicipalElections.Web.Controllers
 {
-    public IActionResult Index()
+    public class HomeController : Controller
     {
-        return View();
-    }
+        private readonly IMunicipalityService _municipalityService;
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        public HomeController(IMunicipalityService municipalityService)
+        {
+            _municipalityService = municipalityService;
+        }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        public async Task<IActionResult> Index()
+        {
+            var municipalities = await _municipalityService.GetAllMunicipalitiesAsync();
+            return View(municipalities);
+        }
     }
 }

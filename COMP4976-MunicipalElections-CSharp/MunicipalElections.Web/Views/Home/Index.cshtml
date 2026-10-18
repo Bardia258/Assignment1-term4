@@ -1,8 +1,29 @@
-﻿@{
+﻿@model IEnumerable<MunicipalElections.Web.ViewModels.MunicipalityViewModel>
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-5 bg-light p-5 rounded shadow-sm">
+    <h1 class="display-4 fw-bold text-primary">Your Municipal Election Guide</h1>
+    <p class="lead">Prepare for the October 17, 2026 election. Review candidates and build your personalized voting guide.</p>
+    <a class="btn btn-primary btn-lg" asp-controller="Municipalities" asp-action="Index">View Municipalities</a>
+</div>
+
+<h3 class="mb-4">Participating Municipalities</h3>
+<div class="row">
+    @foreach (var muni in Model)
+    {
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">@muni.Name</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@muni.Province</h6>
+                    <p class="card-text">@muni.Description</p>
+                    <p class="text-danger fw-bold">Election: @muni.ElectionDate.ToString("MMMM dd, yyyy")</p>
+                    <a asp-controller="Municipalities" asp-action="Details" asp-route-id="@muni.Id" class="btn btn-outline-primary">View Candidates</a>
+                </div>
+            </div>
+        </div>
+    }
 </div>

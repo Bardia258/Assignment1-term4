@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MunicipalElections.Web.Data;
+using MunicipalElections.Web.Services;      // Added
+using MunicipalElections.Web.Services.Mock; // Added
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +16,11 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+// services
+builder.Services.AddScoped<IMunicipalityService, MockMunicipalityService>();
+builder.Services.AddScoped<ICandidateService, MockCandidateService>();
+
+var app = builder.Build(); // 👈 This line locks the services. Nothing can be added after this.
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -24,13 +30,11 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
 app.UseRouting();
-
 app.UseAuthorization();
 
 app.MapStaticAssets();

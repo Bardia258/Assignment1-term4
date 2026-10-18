@@ -1,0 +1,20 @@
+@model IEnumerable<MunicipalElections.Web.ViewModels.MunicipalityViewModel>
+
+@{ ViewData["Title"] = "Municipalities"; }
+
+<h1>Municipalities</h1>
+
+<div class="row mt-4">
+    @foreach (var muni in Model)
+    {
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h4 class="card-title">@muni.Name</h4>
+                    <p class="card-text">@muni.Description</p>
+                    <a asp-action="Details" asp-route-id="@muni.Id" class="btn btn-primary">View Details & Candidates</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
