@@ -1,0 +1,73 @@
+@model IEnumerable<MunicipalElections.Web.ViewModels.CandidateViewModel>
+
+@{
+    ViewData["Title"] = "Candidate Directory";
+}
+
+<h1 class="mb-4">Candidate Directory</h1>
+
+<!-- Search and Filter Form -->
+<div class="card bg-light mb-4 shadow-sm">
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Search by Name</label>
+                <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Enter candidate name..." />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Municipality</label>
+                <select name="municipalityId" class="form-select" asp-items="@(new SelectList(ViewBag.Municipalities, "Id", "Name", ViewBag.CurrentMunicipality))">
+                    <option value="">All Municipalities</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Position</label>
+                <select name="positionId" class="form-select" asp-items="@(new SelectList(ViewBag.Positions, "Id", "Name", ViewBag.CurrentPosition))">
+                    <option value="">All Positions</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Results -->
+<div class="row">
+    @if (!Model.Any())
+    {
+        <div class="col-12 text-center py-5">
+            <h4 class="text-muted">No candidates found matching your criteria.</h4>
+        </div>
+    }
+    else
+    {
+        @foreach (var candidate in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-primary">
+                    @if (!string.IsNullOrEmpty(candidate.PhotoUrl))
+                    {
+                        <img src="~/images/candidates/@candidate.PhotoUrl" class="card-img-top" alt="@candidate.Name" style="height: 250px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex justify-content-center align-items-center" style="height: 250px;">
+                            <span>No Photo</span>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title fw-bold">@candidate.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-primary">@candidate.PositionTitle</h6>
+                        <p class="card-text text-muted mb-1"><small>@candidate.MunicipalityName</small></p>
+                        <p class="card-text text-truncate">@candidate.Profile</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0">
+                        <a asp-action="Details" asp-controller="Candidates" asp-route-id="@candidate.Id" class="btn btn-outline-primary w-100">View Profile</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

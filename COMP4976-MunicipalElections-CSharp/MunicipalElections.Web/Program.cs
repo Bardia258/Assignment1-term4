@@ -5,7 +5,6 @@ using MunicipalElections.Web.Models;
 using MunicipalElections.Web.Authorization;
 using MunicipalElections.Web.Services;
 using Microsoft.Extensions.FileProviders;
-using MunicipalElections.Web.Services.Mock; // Added
 
 var builder = WebApplication.CreateBuilder(args);
 

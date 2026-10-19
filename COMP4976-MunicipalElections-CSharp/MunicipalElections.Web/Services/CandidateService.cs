@@ -22,12 +22,14 @@ namespace MunicipalElections.Web.Services
                 .Where(c => c.MunicipalityId == municipalityId)
                 .Select(c => new CandidateViewModel
                 {
-                    Id = c.CandidateId, // Check his Models folder for exact property names
+                    Id = c.CandidateId,
                     Name = c.Name,
-                    PhotoUrl = c.PhotoFileName, 
-                    PositionTitle = "Candidate", // You may need to join the Positions table if he has one
-                    MunicipalityId = c.MunicipalityId,
-                    MunicipalityName = "Municipality Name" // We can optimize this later
+                    Profile = c.Profile,
+                    PhotoUrl = c.PhotoFileName,
+                    Website = c.Website,
+                    Email = c.Email,
+                    PositionId = c.PositionId,
+                    MunicipalityId = c.MunicipalityId
                 }).ToListAsync();
         }
 
@@ -40,11 +42,48 @@ namespace MunicipalElections.Web.Services
             {
                 Id = c.CandidateId,
                 Name = c.Name,
+                Profile = c.Profile,
                 PhotoUrl = c.PhotoFileName,
-                PositionTitle = "Candidate",
-                MunicipalityId = c.MunicipalityId,
-                MunicipalityName = "Municipality Name"
+                Website = c.Website,
+                Email = c.Email,
+                PositionId = c.PositionId,
+                MunicipalityId = c.MunicipalityId
             };
+        }
+
+        // NEW: Implement the search and filter method
+        public async Task<IEnumerable<CandidateViewModel>> SearchCandidatesAsync(string searchString, int? municipalityId, int? positionId)
+        {
+            // Start with all candidates
+            var query = _context.Candidates.AsQueryable();
+
+            // Apply filters if they are provided
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(c => c.Name.Contains(searchString));
+            }
+            if (municipalityId.HasValue)
+            {
+                query = query.Where(c => c.MunicipalityId == municipalityId.Value);
+            }
+            if (positionId.HasValue)
+            {
+                query = query.Where(c => c.PositionId == positionId.Value);
+            }
+            
+            return await query.Select(c => new CandidateViewModel
+            {
+                Id = c.CandidateId,
+                Name = c.Name,
+                Profile = c.Profile,
+                PhotoUrl = c.PhotoFileName,
+                Website = c.Website,
+                Email = c.Email,
+                PositionId = c.PositionId,
+                PositionTitle = _context.Positions.Where(p => p.PositionId == c.PositionId).Select(p => p.Name).FirstOrDefault(),
+                MunicipalityId = c.MunicipalityId,
+                MunicipalityName = _context.Municipalities.Where(m => m.MunicipalityId == c.MunicipalityId).Select(m => m.Name).FirstOrDefault()
+            }).ToListAsync();
         }
     }
 }

@@ -45,5 +45,17 @@ namespace MunicipalElections.Web.Services
                 LogoUrl = m.LogoFileName
             };
         }
+
+        public async Task<IEnumerable<PositionViewModel>> GetAllPositionsAsync()
+        {
+            return await _context.Positions.Select(p => new PositionViewModel
+            {
+                Id = p.PositionId,
+                Name = p.Name,
+                SeatsaVAILABLE = p.SeatsAvailable
+            }).ToListAsync();
+        }
+
+        
     }
-}
+}  
