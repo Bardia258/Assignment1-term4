@@ -1,0 +1,601 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9AF3754D30848AC000A33A48 /* MunicipalElectionsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3754C30848AC000A33A48 /* MunicipalElectionsApp.swift */; };
+		9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3754E30848AC000A33A48 /* ContentView.swift */; };
+		9AF3755130848AC200A33A48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AF3755030848AC200A33A48 /* Assets.xcassets */; };
+		9AF3755430848AC200A33A48 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AF3755330848AC200A33A48 /* Preview Assets.xcassets */; };
+		9AF3755E30848AC200A33A48 /* MunicipalElectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3755D30848AC200A33A48 /* MunicipalElectionsTests.swift */; };
+		9AF3756830848AC200A33A48 /* MunicipalElectionsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3756730848AC200A33A48 /* MunicipalElectionsUITests.swift */; };
+		9AF3756A30848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3756930848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift */; };
+		9AF3757730848B9300A33A48 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3757630848B9300A33A48 /* Models.swift */; };
+		9AF3757930848BB900A33A48 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3757830848BB900A33A48 /* MockAPIClient.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9AF3755A30848AC200A33A48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AF3754130848AC000A33A48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AF3754830848AC000A33A48;
+			remoteInfo = MunicipalElections;
+		};
+		9AF3756430848AC200A33A48 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AF3754130848AC000A33A48 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AF3754830848AC000A33A48;
+			remoteInfo = MunicipalElections;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9AF3754930848AC000A33A48 /* MunicipalElections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunicipalElections.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AF3754C30848AC000A33A48 /* MunicipalElectionsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsApp.swift; sourceTree = "<group>"; };
+		9AF3754E30848AC000A33A48 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9AF3755030848AC200A33A48 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9AF3755330848AC200A33A48 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9AF3755930848AC200A33A48 /* MunicipalElectionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunicipalElectionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AF3755D30848AC200A33A48 /* MunicipalElectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsTests.swift; sourceTree = "<group>"; };
+		9AF3756330848AC200A33A48 /* MunicipalElectionsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MunicipalElectionsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AF3756730848AC200A33A48 /* MunicipalElectionsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsUITests.swift; sourceTree = "<group>"; };
+		9AF3756930848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9AF3757630848B9300A33A48 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
+		9AF3757830848BB900A33A48 /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AF3754630848AC000A33A48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3755630848AC200A33A48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3756030848AC200A33A48 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9AF3754030848AC000A33A48 = {
+			isa = PBXGroup;
+			children = (
+				9AF3757830848BB900A33A48 /* MockAPIClient.swift */,
+				9AF3757630848B9300A33A48 /* Models.swift */,
+				9AF3754B30848AC000A33A48 /* MunicipalElections */,
+				9AF3755C30848AC200A33A48 /* MunicipalElectionsTests */,
+				9AF3756630848AC200A33A48 /* MunicipalElectionsUITests */,
+				9AF3754A30848AC000A33A48 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9AF3754A30848AC000A33A48 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9AF3754930848AC000A33A48 /* MunicipalElections.app */,
+				9AF3755930848AC200A33A48 /* MunicipalElectionsTests.xctest */,
+				9AF3756330848AC200A33A48 /* MunicipalElectionsUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AF3754B30848AC000A33A48 /* MunicipalElections */ = {
+			isa = PBXGroup;
+			children = (
+				9AF3754C30848AC000A33A48 /* MunicipalElectionsApp.swift */,
+				9AF3754E30848AC000A33A48 /* ContentView.swift */,
+				9AF3755030848AC200A33A48 /* Assets.xcassets */,
+				9AF3755230848AC200A33A48 /* Preview Content */,
+			);
+			path = MunicipalElections;
+			sourceTree = "<group>";
+		};
+		9AF3755230848AC200A33A48 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9AF3755330848AC200A33A48 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9AF3755C30848AC200A33A48 /* MunicipalElectionsTests */ = {
+			isa = PBXGroup;
+			children = (
+				9AF3755D30848AC200A33A48 /* MunicipalElectionsTests.swift */,
+			);
+			path = MunicipalElectionsTests;
+			sourceTree = "<group>";
+		};
+		9AF3756630848AC200A33A48 /* MunicipalElectionsUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9AF3756730848AC200A33A48 /* MunicipalElectionsUITests.swift */,
+				9AF3756930848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift */,
+			);
+			path = MunicipalElectionsUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9AF3754830848AC000A33A48 /* MunicipalElections */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AF3756D30848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElections" */;
+			buildPhases = (
+				9AF3754530848AC000A33A48 /* Sources */,
+				9AF3754630848AC000A33A48 /* Frameworks */,
+				9AF3754730848AC000A33A48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MunicipalElections;
+			productName = MunicipalElections;
+			productReference = 9AF3754930848AC000A33A48 /* MunicipalElections.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9AF3755830848AC200A33A48 /* MunicipalElectionsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AF3757030848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElectionsTests" */;
+			buildPhases = (
+				9AF3755530848AC200A33A48 /* Sources */,
+				9AF3755630848AC200A33A48 /* Frameworks */,
+				9AF3755730848AC200A33A48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AF3755B30848AC200A33A48 /* PBXTargetDependency */,
+			);
+			name = MunicipalElectionsTests;
+			productName = MunicipalElectionsTests;
+			productReference = 9AF3755930848AC200A33A48 /* MunicipalElectionsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9AF3756230848AC200A33A48 /* MunicipalElectionsUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AF3757330848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElectionsUITests" */;
+			buildPhases = (
+				9AF3755F30848AC200A33A48 /* Sources */,
+				9AF3756030848AC200A33A48 /* Frameworks */,
+				9AF3756130848AC200A33A48 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9AF3756530848AC200A33A48 /* PBXTargetDependency */,
+			);
+			name = MunicipalElectionsUITests;
+			productName = MunicipalElectionsUITests;
+			productReference = 9AF3756330848AC200A33A48 /* MunicipalElectionsUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9AF3754130848AC000A33A48 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					9AF3754830848AC000A33A48 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					9AF3755830848AC200A33A48 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 9AF3754830848AC000A33A48;
+					};
+					9AF3756230848AC200A33A48 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 9AF3754830848AC000A33A48;
+					};
+				};
+			};
+			buildConfigurationList = 9AF3754430848AC000A33A48 /* Build configuration list for PBXProject "MunicipalElections" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9AF3754030848AC000A33A48;
+			productRefGroup = 9AF3754A30848AC000A33A48 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AF3754830848AC000A33A48 /* MunicipalElections */,
+				9AF3755830848AC200A33A48 /* MunicipalElectionsTests */,
+				9AF3756230848AC200A33A48 /* MunicipalElectionsUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9AF3754730848AC000A33A48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF3755430848AC200A33A48 /* Preview Assets.xcassets in Resources */,
+				9AF3755130848AC200A33A48 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3755730848AC200A33A48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3756130848AC200A33A48 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9AF3754530848AC000A33A48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF3757730848B9300A33A48 /* Models.swift in Sources */,
+				9AF3757930848BB900A33A48 /* MockAPIClient.swift in Sources */,
+				9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */,
+				9AF3754D30848AC000A33A48 /* MunicipalElectionsApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3755530848AC200A33A48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF3755E30848AC200A33A48 /* MunicipalElectionsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9AF3755F30848AC200A33A48 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AF3756A30848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift in Sources */,
+				9AF3756830848AC200A33A48 /* MunicipalElectionsUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9AF3755B30848AC200A33A48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AF3754830848AC000A33A48 /* MunicipalElections */;
+			targetProxy = 9AF3755A30848AC200A33A48 /* PBXContainerItemProxy */;
+		};
+		9AF3756530848AC200A33A48 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AF3754830848AC000A33A48 /* MunicipalElections */;
+			targetProxy = 9AF3756430848AC200A33A48 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9AF3756B30848AC200A33A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9AF3756C30848AC200A33A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9AF3756E30848AC200A33A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MunicipalElections/Preview Content\"";
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElections;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9AF3756F30848AC200A33A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"MunicipalElections/Preview Content\"";
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElections;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9AF3757130848AC200A33A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElectionsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MunicipalElections.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MunicipalElections";
+			};
+			name = Debug;
+		};
+		9AF3757230848AC200A33A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElectionsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MunicipalElections.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MunicipalElections";
+			};
+			name = Release;
+		};
+		9AF3757430848AC200A33A48 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElectionsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MunicipalElections;
+			};
+			name = Debug;
+		};
+		9AF3757530848AC200A33A48 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = TD48QG5Y66;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = BCIT.MunicipalElectionsUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = MunicipalElections;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9AF3754430848AC000A33A48 /* Build configuration list for PBXProject "MunicipalElections" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF3756B30848AC200A33A48 /* Debug */,
+				9AF3756C30848AC200A33A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AF3756D30848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElections" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF3756E30848AC200A33A48 /* Debug */,
+				9AF3756F30848AC200A33A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AF3757030848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElectionsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF3757130848AC200A33A48 /* Debug */,
+				9AF3757230848AC200A33A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AF3757330848AC200A33A48 /* Build configuration list for PBXNativeTarget "MunicipalElectionsUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AF3757430848AC200A33A48 /* Debug */,
+				9AF3757530848AC200A33A48 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9AF3754130848AC000A33A48 /* Project object */;
+}
