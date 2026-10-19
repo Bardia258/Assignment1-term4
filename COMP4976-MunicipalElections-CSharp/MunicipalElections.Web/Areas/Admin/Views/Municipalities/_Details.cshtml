@@ -1,0 +1,3 @@
+@model Municipality
+@if (Images.Url(Model.LogoFileName, "logos") is string imageUrl) { <img src="@Url.Content("~" + imageUrl)" class="admin-preview mb-3" alt="@Model.Name logo" /> }
+<dl class="row"><dt class="col-sm-3">Name</dt><dd class="col-sm-9">@Model.Name</dd><dt class="col-sm-3">Province</dt><dd class="col-sm-9">@Model.Province</dd><dt class="col-sm-3">Election date</dt><dd class="col-sm-9">@Model.ElectionDate.ToString("yyyy-MM-dd")</dd><dt class="col-sm-3">Description</dt><dd class="col-sm-9 biography">@Model.Description</dd></dl>

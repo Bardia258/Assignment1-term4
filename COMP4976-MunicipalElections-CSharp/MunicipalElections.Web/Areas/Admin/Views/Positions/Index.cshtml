@@ -1,0 +1,10 @@
+@model IEnumerable<Position>
+@{ ViewData["Title"] = "Positions"; }
+<div class="d-flex justify-content-between align-items-center mb-3"><h1>Positions</h1><a asp-action="Create" class="btn btn-primary">Create position</a></div>
+<div class="table-responsive"><table class="table table-striped bg-white"><thead><tr><th>Position</th><th>Municipality</th><th>Available seats</th><th>Actions</th></tr></thead><tbody>
+@foreach (var item in Model)
+{
+    <tr><td>@item.Name</td><td>@item.Municipality.Name</td><td>@item.SeatsAvailable</td><td class="actions"><a asp-action="Details" asp-route-id="@item.PositionId" class="btn btn-sm btn-outline-secondary">Details</a> <a asp-action="Edit" asp-route-id="@item.PositionId" class="btn btn-sm btn-outline-primary">Edit</a> <a asp-action="Delete" asp-route-id="@item.PositionId" class="btn btn-sm btn-outline-danger">Delete</a></td></tr>
+}
+</tbody></table></div>
+@if (!Model.Any()) { <p>No positions yet. Create a position in an authorized municipality.</p> }

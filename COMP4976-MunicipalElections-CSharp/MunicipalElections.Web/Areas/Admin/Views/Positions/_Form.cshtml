@@ -1,0 +1,14 @@
+@model PositionInput
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+<input asp-for="Revision" type="hidden" />
+<div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name"></span></div>
+<div class="mb-3"><label asp-for="SeatsAvailable" class="form-label"></label><input asp-for="SeatsAvailable" class="form-control" min="1" /><span asp-validation-for="SeatsAvailable"></span></div>
+<div class="mb-3"><label asp-for="MunicipalityId" class="form-label"></label>
+@if (ViewContext.RouteData.Values["action"]?.ToString() == "Edit")
+{
+    <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-select" disabled></select>
+    <input type="hidden" name="MunicipalityId" value="@Model.MunicipalityId" />
+    <div class="form-text">The municipality is fixed. Create a new position to use another municipality.</div>
+}
+else { <select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-select"><option value="">Choose a municipality</option></select> }
+<span asp-validation-for="MunicipalityId"></span></div>

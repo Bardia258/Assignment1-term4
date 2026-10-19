@@ -1,0 +1,10 @@
+@model IEnumerable<Municipality>
+@{ ViewData["Title"] = "Municipalities"; }
+<div class="d-flex justify-content-between align-items-center mb-3"><h1>Municipalities</h1><a asp-action="Create" class="btn btn-primary">Create municipality</a></div>
+<div class="table-responsive"><table class="table table-striped bg-white"><thead><tr><th>Logo</th><th>Name</th><th>Province</th><th>Election date</th><th>Actions</th></tr></thead><tbody>
+@foreach (var item in Model)
+{
+    <tr><td>@if (Images.Url(item.LogoFileName, "logos") is string imageUrl) { <img src="@Url.Content("~" + imageUrl)" class="admin-thumb" alt="@item.Name logo" /> } else { <span class="text-muted">No logo</span> }</td><td>@item.Name</td><td>@item.Province</td><td>@item.ElectionDate.ToString("yyyy-MM-dd")</td><td class="actions"><a asp-action="Details" asp-route-id="@item.MunicipalityId" class="btn btn-sm btn-outline-secondary">Details</a> <a asp-action="Edit" asp-route-id="@item.MunicipalityId" class="btn btn-sm btn-outline-primary">Edit</a> <a asp-action="Delete" asp-route-id="@item.MunicipalityId" class="btn btn-sm btn-outline-danger">Delete</a></td></tr>
+}
+</tbody></table></div>
+@if (!Model.Any()) { <p>No municipalities yet. Create one to get started.</p> }
