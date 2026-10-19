@@ -63,8 +63,11 @@
                         <p class="card-text text-muted mb-1"><small>@candidate.MunicipalityName</small></p>
                         <p class="card-text text-truncate">@candidate.Profile</p>
                     </div>
-                    <div class="card-footer bg-white border-top-0">
+                    <div class="card-footer bg-white border-top-7">
                         <a asp-action="Details" asp-controller="Candidates" asp-route-id="@candidate.Id" class="btn btn-outline-primary w-100">View Profile</a>
+                    </div>
+                    <div class="card-footer bg-white border-top-7">
+                        <a asp-action="Add" asp-controller="VotingGuide" asp-route-id="@candidate.Id" class="btn btn-success w-50">+ Add to Guide</a>
                     </div>
                 </div>
             </div>

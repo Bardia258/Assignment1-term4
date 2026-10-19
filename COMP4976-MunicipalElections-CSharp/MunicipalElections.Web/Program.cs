@@ -8,6 +8,7 @@ using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSession();
 // Add services to the container.
 var configuredConnection = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found. Set it in appsettings.Development.json for local development.");
@@ -26,6 +27,7 @@ builder.Services.AddScoped<ICandidateService, CandidateService>();
 
 builder.Services.AddScoped<MunicipalElections.Web.Authorization.AdminAccessService>();
 var app = builder.Build();
+app.UseSession();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
