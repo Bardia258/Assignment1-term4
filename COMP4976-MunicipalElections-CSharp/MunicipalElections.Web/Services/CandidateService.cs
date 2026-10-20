@@ -19,19 +19,21 @@ namespace MunicipalElections.Web.Services
         public async Task<IEnumerable<CandidateViewModel>> GetCandidatesByMunicipalityAsync(int municipalityId)
         {
             return await _context.Candidates
-                .Where(c => c.MunicipalityId == municipalityId)
-                .Select(c => new CandidateViewModel
-                {
-                    Id = c.CandidateId,
-                    Name = c.Name,
-                    Profile = c.Profile,
-                    PhotoUrl = c.PhotoFileName,
-                    Website = c.Website,
-                    Email = c.Email,
-                    PositionId = c.PositionId,
-                    MunicipalityId = c.MunicipalityId
-                }).ToListAsync();
-        }
+            .Where(c => c.MunicipalityId == municipalityId)
+            .Select(c => new CandidateViewModel
+            {
+                Id = c.CandidateId,
+                Name = c.Name,
+                Profile = c.Profile,
+                PhotoUrl = c.PhotoFileName,
+                Website = c.Website,
+                Email = c.Email,
+                PositionId = c.PositionId,
+                PositionTitle = _context.Positions.Where(p => p.PositionId == c.PositionId).Select(p => p.Name).FirstOrDefault() ?? "Candidate",
+                MunicipalityId = c.MunicipalityId,
+                MunicipalityName = _context.Municipalities.Where(m => m.MunicipalityId == c.MunicipalityId).Select(m => m.Name).FirstOrDefault() ?? "Unknown"
+            }).ToListAsync();
+}
 
         public async Task<CandidateViewModel?> GetCandidateByIdAsync(int id)
 {

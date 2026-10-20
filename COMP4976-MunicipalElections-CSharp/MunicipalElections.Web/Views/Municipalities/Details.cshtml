@@ -1,21 +1,45 @@
-<hr />
+@model MunicipalElections.Web.ViewModels.MunicipalityViewModel
 
-<h3>Candidates</h3>
+@{ ViewData["Title"] = Model.Name; }
+
+<div class="bg-light p-4 rounded shadow-sm mb-4">
+    <h1 class="display-5 fw-bold text-primary">@Model.Name</h1>
+    <h5 class="text-muted">@Model.Province</h5>
+    <p class="lead mt-3">@Model.Description</p>
+    <p class="text-danger fw-bold mb-0">Election Date: @Model.ElectionDate.ToString("MMMM dd, yyyy")</p>
+</div>
+
+<h3 class="mb-4">Candidates for @Model.Name</h3>
+
 @{
     var candidates = ViewBag.Candidates as IEnumerable<MunicipalElections.Web.ViewModels.CandidateViewModel>;
 }
 
 @if (candidates != null && candidates.Any())
 {
-    <div class="row mt-3">
+    <div class="row">
         @foreach (var candidate in candidates)
         {
-            <div class="col-md-4 mb-3">
-                <div class="card border-primary h-100">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm border-primary">
+                    @if (!string.IsNullOrEmpty(candidate.PhotoUrl))
+                    {
+                        <img src="~/images/candidates/@candidate.PhotoUrl" class="card-img-top" alt="@candidate.Name" style="height: 250px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="bg-secondary text-white d-flex justify-content-center align-items-center" style="height: 250px;">
+                            <span>No Photo</span>
+                        </div>
+                    }
                     <div class="card-body">
-                        <h5 class="card-title">@candidate.Name</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">@candidate.PositionTitle</h6>
-                        <p class="card-text">@candidate.Bio</p>
+                        <h5 class="card-title fw-bold">@candidate.Name</h5>
+                        <h6 class="card-subtitle mb-2 text-primary">@candidate.PositionTitle</h6>
+                        <p class="card-text text-truncate">@candidate.Profile</p>
+                    </div>
+                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                        <a asp-controller="Candidates" asp-action="Details" asp-route-id="@candidate.Id" class="btn btn-outline-primary w-50 me-2">View Profile</a>
+                        <a asp-controller="VotingGuide" asp-action="Add" asp-route-id="@candidate.Id" class="btn btn-success w-50">+ Add to Guide</a>
                     </div>
                 </div>
             </div>
@@ -24,5 +48,5 @@
 }
 else
 {
-    <p class="text-muted">No candidates registered for this municipality yet.</p>
+    <div class="alert alert-info">No candidates registered for this municipality yet.</div>
 }
