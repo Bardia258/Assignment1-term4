@@ -31,5 +31,15 @@ namespace MunicipalElections.Web.Controllers
 
             return View(candidates);
         }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var candidate = await _candidateService.GetCandidateByIdAsync(id);
+            if (candidate == null)
+            {
+                return NotFound();
+            }
+            return View(candidate);
+        }
     }
 }
