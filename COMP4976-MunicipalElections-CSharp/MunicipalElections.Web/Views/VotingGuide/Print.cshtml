@@ -1,0 +1,66 @@
+@model IEnumerable<MunicipalElections.Web.ViewModels.CandidateViewModel>
+
+@{
+    ViewData["Title"] = "Print Voting Guide";
+    var printDate = ViewBag.PrintDate;
+}
+
+<style>
+    /* This CSS only applies when the user actually prints the page */
+    @@media print {
+        .no-print { display: none !important; }
+        body { background-color: white; color: black; }
+        .print-container { max-width: 100%; padding: 0; margin: 0; }
+        .card { border: none !important; box-shadow: none !important; }
+        .print-border { border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px; }
+    }
+</style>
+
+<div class="container mt-4 print-container">
+    
+    <!-- This header will show on the screen but be hidden when printed if you want, but it's good to keep it -->
+    <div class="d-flex justify-content-between align-items-center mb-4 no-print">
+        <h2>Your Printable Voting Guide</h2>
+        <div>
+            <button onclick="window.print()" class="btn btn-primary">Print Now</button>
+            <a asp-action="Index" class="btn btn-outline-secondary ms-2">Back to Guide</a>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <h1 class="display-5 fw-bold">Municipal Elections Guide</h1>
+        <h4 class="text-muted">Election Date: October 17, 2026</h4>
+        <p class="mb-0">Printed on: @printDate</p>
+        <hr />
+    </div>
+
+    @if (!Model.Any())
+    {
+        <h3 class="text-center text-muted">No candidates selected.</h3>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var candidate in Model)
+            {
+                <div class="col-12 mb-4 print-border">
+                    <div class="row align-items-center">
+                        <!-- Optional Photo -->
+                        @if (!string.IsNullOrEmpty(candidate.PhotoUrl))
+                        {
+                            <div class="col-2">
+                                <img src="~/images/candidates/@candidate.PhotoUrl" class="img-fluid rounded" alt="@candidate.Name" />
+                            </div>
+                        }
+                        
+                        <div class="@(string.IsNullOrEmpty(candidate.PhotoUrl) ? "col-12" : "col-10")">
+                            <h3 class="fw-bold mb-1">@candidate.Name</h3>
+                            <h5 class="text-primary mb-2">@candidate.PositionTitle</h5>
+                            <p class="mb-0"><strong>Municipality:</strong> @candidate.MunicipalityName</p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

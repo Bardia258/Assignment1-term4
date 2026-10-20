@@ -34,22 +34,25 @@ namespace MunicipalElections.Web.Services
         }
 
         public async Task<CandidateViewModel?> GetCandidateByIdAsync(int id)
+{
+    return await _context.Candidates
+        .Where(c => c.CandidateId == id)
+        .Select(c => new CandidateViewModel
         {
-            var c = await _context.Candidates.FindAsync(id);
-            if (c == null) return null;
-
-            return new CandidateViewModel
-            {
-                Id = c.CandidateId,
-                Name = c.Name,
-                Profile = c.Profile,
-                PhotoUrl = c.PhotoFileName,
-                Website = c.Website,
-                Email = c.Email,
-                PositionId = c.PositionId,
-                MunicipalityId = c.MunicipalityId
-            };
-        }
+            Id = c.CandidateId,
+            Name = c.Name,
+            Profile = c.Profile,
+            PhotoUrl = c.PhotoFileName,
+            Website = c.Website,
+            Email = c.Email,
+            PositionId = c.PositionId,
+            // Fetch the Position Name from the Positions table
+            PositionTitle = _context.Positions.Where(p => p.PositionId == c.PositionId).Select(p => p.Name).FirstOrDefault() ?? "Candidate",
+            MunicipalityId = c.MunicipalityId,
+            // Fetch the Municipality Name from the Municipalities table
+            MunicipalityName = _context.Municipalities.Where(m => m.MunicipalityId == c.MunicipalityId).Select(m => m.Name).FirstOrDefault() ?? "Unknown"
+        }).FirstOrDefaultAsync();
+}
 
         // NEW: Implement the search and filter method
         public async Task<IEnumerable<CandidateViewModel>> SearchCandidatesAsync(string searchString, int? municipalityId, int? positionId)

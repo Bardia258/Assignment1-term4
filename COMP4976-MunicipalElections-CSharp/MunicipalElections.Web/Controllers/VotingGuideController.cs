@@ -61,5 +61,26 @@ namespace MunicipalElections.Web.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public async Task<IActionResult> Print()
+        {
+            // Get the list of IDs from the session (or an empty list if nothing is there)
+            var guideIds = HttpContext.Session.Get<List<int>>("VotingGuide") ?? new List<int>();
+
+            var candidates = new List<CandidateViewModel>();
+            foreach (var id in guideIds)
+            {
+                var candidate = await _candidateService.GetCandidateByIdAsync(id);
+                if (candidate != null)
+            {
+            candidates.Add(candidate);
+        }
+        }
+    
+        // Pass the current date to the view
+        ViewBag.PrintDate = DateTime.Now.ToString("MMMM dd, yyyy");
+    
+        return View(candidates);
+        }
     }
 }
