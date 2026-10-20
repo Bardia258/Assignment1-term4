@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9AA24D373086FA7A002131F1 /* CandidateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */; };
+		9AA24D393086FF4A002131F1 /* VotingGuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */; };
+		9AA24D3B30870023002131F1 /* VotingGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D3A30870023002131F1 /* VotingGuideView.swift */; };
+		9AA24D3D3087078C002131F1 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D3C3087078C002131F1 /* AuthViewModel.swift */; };
+		9AA24D3F308707DB002131F1 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D3E308707DB002131F1 /* LoginView.swift */; };
+		9AA24D4130870810002131F1 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D4030870810002131F1 /* RegisterView.swift */; };
+		9AA24D433087083D002131F1 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D423087083D002131F1 /* ProfileView.swift */; };
+		9AA24D45308724BF002131F1 /* CandidateDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D44308724BF002131F1 /* CandidateDirectoryViewModel.swift */; };
+		9AA24D47308724D8002131F1 /* CandidateDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D46308724D8002131F1 /* CandidateDirectoryView.swift */; };
 		9AF3754D30848AC000A33A48 /* MunicipalElectionsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3754C30848AC000A33A48 /* MunicipalElectionsApp.swift */; };
 		9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3754E30848AC000A33A48 /* ContentView.swift */; };
 		9AF3755130848AC200A33A48 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AF3755030848AC200A33A48 /* Assets.xcassets */; };
@@ -36,6 +45,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateDetailView.swift; sourceTree = "<group>"; };
+		9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingGuideManager.swift; sourceTree = "<group>"; };
+		9AA24D3A30870023002131F1 /* VotingGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingGuideView.swift; sourceTree = "<group>"; };
+		9AA24D3C3087078C002131F1 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
+		9AA24D3E308707DB002131F1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		9AA24D4030870810002131F1 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
+		9AA24D423087083D002131F1 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		9AA24D44308724BF002131F1 /* CandidateDirectoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateDirectoryViewModel.swift; sourceTree = "<group>"; };
+		9AA24D46308724D8002131F1 /* CandidateDirectoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateDirectoryView.swift; sourceTree = "<group>"; };
 		9AF3754930848AC000A33A48 /* MunicipalElections.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MunicipalElections.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF3754C30848AC000A33A48 /* MunicipalElectionsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsApp.swift; sourceTree = "<group>"; };
 		9AF3754E30848AC000A33A48 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -78,6 +96,15 @@
 		9AF3754030848AC000A33A48 = {
 			isa = PBXGroup;
 			children = (
+				9AA24D44308724BF002131F1 /* CandidateDirectoryViewModel.swift */,
+				9AA24D46308724D8002131F1 /* CandidateDirectoryView.swift */,
+				9AA24D423087083D002131F1 /* ProfileView.swift */,
+				9AA24D4030870810002131F1 /* RegisterView.swift */,
+				9AA24D3E308707DB002131F1 /* LoginView.swift */,
+				9AA24D3C3087078C002131F1 /* AuthViewModel.swift */,
+				9AA24D3A30870023002131F1 /* VotingGuideView.swift */,
+				9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */,
+				9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */,
 				9AF3757830848BB900A33A48 /* MockAPIClient.swift */,
 				9AF3757630848B9300A33A48 /* Models.swift */,
 				9AF3754B30848AC000A33A48 /* MunicipalElections */,
@@ -264,9 +291,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF3757730848B9300A33A48 /* Models.swift in Sources */,
+				9AA24D4130870810002131F1 /* RegisterView.swift in Sources */,
 				9AF3757930848BB900A33A48 /* MockAPIClient.swift in Sources */,
 				9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */,
+				9AA24D3F308707DB002131F1 /* LoginView.swift in Sources */,
+				9AA24D3B30870023002131F1 /* VotingGuideView.swift in Sources */,
+				9AA24D47308724D8002131F1 /* CandidateDirectoryView.swift in Sources */,
+				9AA24D3D3087078C002131F1 /* AuthViewModel.swift in Sources */,
+				9AA24D373086FA7A002131F1 /* CandidateDetailView.swift in Sources */,
 				9AF3754D30848AC000A33A48 /* MunicipalElectionsApp.swift in Sources */,
+				9AA24D433087083D002131F1 /* ProfileView.swift in Sources */,
+				9AA24D45308724BF002131F1 /* CandidateDirectoryViewModel.swift in Sources */,
+				9AA24D393086FF4A002131F1 /* VotingGuideManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

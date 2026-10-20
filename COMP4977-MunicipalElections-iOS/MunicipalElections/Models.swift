@@ -12,8 +12,10 @@ struct Municipality: Identifiable, Codable {
 struct Candidate: Identifiable, Codable {
     let id: Int
     let name: String
-    let bio: String
-    let photoUrl: String?
+    let profile: String     // Matches DB "Profile"
+    let photoUrl: String?   // Matches DB "PhotoFileName"
+    let website: String?    // Matches DB "Website"
+    let email: String?      // Matches DB "Email"
     let positionTitle: String
     let municipalityId: Int
 }

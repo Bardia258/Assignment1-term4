@@ -1,6 +1,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @AppStorage("authToken") var authToken: String = ""
+    
     var body: some View {
         TabView {
             MunicipalityListView()
@@ -8,15 +11,28 @@ struct ContentView: View {
                     Label("Municipalities", systemImage: "building.columns")
                 }
             
-            Text("Voting Guide Coming Soon")
+            CandidateDirectoryView()
+                .tabItem {
+                    Label("Directory", systemImage: "magnifyingglass")
+                }
+                    
+            // Here is Voting Guide Tab
+            VotingGuideView()
                 .tabItem {
                     Label("My Guide", systemImage: "checklist")
                 }
             
-            Text("Login Coming Soon")
-                .tabItem {
-                    Label("Account", systemImage: "person.circle")
+            // Here is Account Tab
+            Group {
+                if authToken.isEmpty {
+                    LoginView()
+                } else {
+                    ProfileView()
                 }
+            }
+            .tabItem{
+                Label("Account", systemImage: "person.circle")
+            }
         }
     }
 }
@@ -81,17 +97,21 @@ struct MunicipalityDetailView: View {
                         .foregroundColor(.secondary)
                 } else {
                     ForEach(candidates) { candidate in
-                        VStack(alignment: .leading) {
-                            Text(candidate.name)
-                                .font(.headline)
-                            Text(candidate.positionTitle)
-                                .font(.subheadline)
-                                .foregroundColor(.blue)
-                            Text(candidate.bio)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                        NavigationLink(destination: CandidateDetailView(candidate: candidate)) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(candidate.name)
+                                    .font(.headline)
+                                Text(candidate.positionTitle)
+                                    .font(.subheadline)
+                                    .foregroundColor(.blue)
+                                // FIXED: Changed bio to profile
+                                Text(candidate.profile)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                    .lineLimit(2)
+                            }
+                            .padding(.vertical, 4)
                         }
-                        .padding(.vertical, 4)
                     }
                 }
             }
@@ -108,6 +128,7 @@ struct MunicipalityDetailView: View {
         }
     }
 }
+
 
 #Preview {
     ContentView()
