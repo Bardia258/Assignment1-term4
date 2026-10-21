@@ -10,9 +10,10 @@ public static class DatabaseInitialization
 {
     public const string SeedDemoDataCommand = "--seed-demo-data";
     public const string ProvisionSuperAdminCommand = "--provision-super-admin";
+    public const string ProvisionPittMeadowsAdminCommand = "--provision-pm-admin";
 
     public static bool IsInitializationCommand(string argument) =>
-        argument is SeedDemoDataCommand or ProvisionSuperAdminCommand;
+        argument is SeedDemoDataCommand or ProvisionSuperAdminCommand or ProvisionPittMeadowsAdminCommand;
 
     public static async Task<int> RunAsync(IServiceProvider services, IConfiguration configuration,
         string[] args, TextWriter output, TextWriter error, CancellationToken cancellationToken = default)
@@ -44,12 +45,19 @@ public static class DatabaseInitialization
                 await DbSeeder.SeedAsync(db, cancellationToken);
                 await output.WriteLineAsync("Demo election data initialized. Existing records and users were preserved.");
             }
-            else
+            else if (commands[0] == ProvisionSuperAdminCommand)
             {
                 var created = await ProductionAdminProvisioner.ProvisionAsync(scope.ServiceProvider, configuration, cancellationToken);
                 await output.WriteLineAsync(created
                     ? "Production Super Admin created. Remove BootstrapAdmin settings from the deployment configuration."
                     : "Production Super Admin already provisioned. No account, password, or permission changes were made.");
+            }
+            else
+            {
+                var created = await ProductionPittMeadowsAdminProvisioner.ProvisionAsync(scope.ServiceProvider, configuration, cancellationToken);
+                await output.WriteLineAsync(created
+                    ? "Pitt Meadows administrator created. Remove BootstrapAdmin settings from the deployment configuration."
+                    : "Pitt Meadows administrator already provisioned. No account, password, or permission changes were made.");
             }
             return 0;
         }
