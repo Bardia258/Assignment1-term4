@@ -9,7 +9,11 @@ struct CandidateDirectoryView: View {
                 if viewModel.isLoading {
                     ProgressView("Loading Directory...")
                 } else if let error = viewModel.errorMessage {
-                    Text(error).foregroundColor(.red)
+                    VStack(spacing: 12) {
+                        Text(error).foregroundColor(.red)
+                        Button("Retry") { Task { await viewModel.fetchCandidates() } }
+                    }
+                    .padding()
                 } else {
                     List(viewModel.filteredCandidates) { candidate in
                         NavigationLink(destination: CandidateDetailView(candidate: candidate)) {
@@ -36,6 +40,12 @@ struct CandidateDirectoryView: View {
                     }
                     // Native iOS Search Bar
                     .searchable(text: $viewModel.searchText, prompt: "Search candidates by name")
+                    .refreshable { await viewModel.fetchCandidates() }
+                    .overlay {
+                        if viewModel.filteredCandidates.isEmpty {
+                            Text("No candidates found.").foregroundColor(.secondary)
+                        }
+                    }
                 }
             }
             .navigationTitle("Directory")
@@ -51,4 +61,5 @@ struct CandidateDirectoryView: View {
 
 #Preview {
     CandidateDirectoryView()
+        .environmentObject(VotingGuideManager())
 }

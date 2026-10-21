@@ -44,10 +44,10 @@ struct LoginView: View {
                 
                 // Login Button
                 Button(action: {
-                    viewModel.login { success in
-                        if success {
-                            authToken = "mock-jwt-token-12345"
-                            userEmail = viewModel.email
+                    Task {
+                        if let token = await viewModel.login() {
+                            userEmail = viewModel.email.trimmingCharacters(in: .whitespacesAndNewlines)
+                            authToken = token
                         }
                     }
                 }) {

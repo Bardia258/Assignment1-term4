@@ -24,7 +24,7 @@
 		9AF3756830848AC200A33A48 /* MunicipalElectionsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3756730848AC200A33A48 /* MunicipalElectionsUITests.swift */; };
 		9AF3756A30848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3756930848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift */; };
 		9AF3757730848B9300A33A48 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3757630848B9300A33A48 /* Models.swift */; };
-		9AF3757930848BB900A33A48 /* MockAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3757830848BB900A33A48 /* MockAPIClient.swift */; };
+		9AF3757930848BB900A33A48 /* APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF3757830848BB900A33A48 /* APIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,7 +65,7 @@
 		9AF3756730848AC200A33A48 /* MunicipalElectionsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsUITests.swift; sourceTree = "<group>"; };
 		9AF3756930848AC200A33A48 /* MunicipalElectionsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalElectionsUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9AF3757630848B9300A33A48 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
-		9AF3757830848BB900A33A48 /* MockAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAPIClient.swift; sourceTree = "<group>"; };
+		9AF3757830848BB900A33A48 /* APIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,7 +105,7 @@
 				9AA24D3A30870023002131F1 /* VotingGuideView.swift */,
 				9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */,
 				9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */,
-				9AF3757830848BB900A33A48 /* MockAPIClient.swift */,
+				9AF3757830848BB900A33A48 /* APIClient.swift */,
 				9AF3757630848B9300A33A48 /* Models.swift */,
 				9AF3754B30848AC000A33A48 /* MunicipalElections */,
 				9AF3755C30848AC200A33A48 /* MunicipalElectionsTests */,
@@ -292,7 +292,7 @@
 			files = (
 				9AF3757730848B9300A33A48 /* Models.swift in Sources */,
 				9AA24D4130870810002131F1 /* RegisterView.swift in Sources */,
-				9AF3757930848BB900A33A48 /* MockAPIClient.swift in Sources */,
+				9AF3757930848BB900A33A48 /* APIClient.swift in Sources */,
 				9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */,
 				9AA24D3F308707DB002131F1 /* LoginView.swift in Sources */,
 				9AA24D3B30870023002131F1 /* VotingGuideView.swift in Sources */,

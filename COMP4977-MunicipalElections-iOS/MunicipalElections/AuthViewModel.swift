@@ -1,23 +1,23 @@
 import Foundation
 import Combine
 
-// Models for the API
-struct LoginRequest: Codable {
-    let email: String
+struct LoginRequest: Encodable {
+    let username: String
     let password: String
 }
 
-struct RegisterRequest: Codable {
-    let name: String
+struct RegisterRequest: Encodable {
+    let username: String
     let email: String
     let password: String
+    let fullName: String
 }
 
-struct AuthResponse: Codable {
+struct AuthResponse: Decodable {
     let token: String
 }
 
-// MVVM ViewModel
+@MainActor
 class AuthViewModel: ObservableObject {
     @Published var email = ""
     @Published var password = ""
@@ -26,43 +26,48 @@ class AuthViewModel: ObservableObject {
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
     
-    // Simple validation checks required by the assignment
+    private var trimmedEmail: String { email.trimmingCharacters(in: .whitespacesAndNewlines) }
+
     var isLoginValid: Bool {
-        return !email.isEmpty && email.contains("@") && password.count >= 6
+        !trimmedEmail.isEmpty && trimmedEmail.contains("@") && !password.isEmpty
     }
     
     var isRegisterValid: Bool {
-        return !name.isEmpty && !email.isEmpty && email.contains("@") && password.count >= 6
+        !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            && trimmedEmail.count <= 100 && isLoginValid && password.count >= 6
     }
     
-    // Mock Login (swap this with URLSession later)
-    func login(completion: @escaping (Bool) -> Void) {
+    func login() async -> String? {
         isLoading = true
         errorMessage = nil
         
-        // Simulate network delay
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.isLoading = false
-            
-            // Hardcoded mock validation for now
-            if self.email == "test@test.com" && self.password == "password123" {
-                completion(true)
-            } else {
-                self.errorMessage = "Invalid email or password. (Use test@test.com / password123)"
-                completion(false)
+        defer { isLoading = false }
+        do {
+            // The backend accepts an email in its username field.
+            let response = try await APIClient.shared.login(LoginRequest(username: trimmedEmail, password: password))
+            guard !response.token.isEmpty else {
+                throw APIError(statusCode: 0, message: "The server did not return a login token.")
             }
+            return response.token
+        } catch {
+            errorMessage = error.localizedDescription
+            return nil
         }
     }
     
-    // Mock Register
-    func register(completion: @escaping (Bool) -> Void) {
+    func register() async -> Bool {
         isLoading = true
         errorMessage = nil
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            self.isLoading = false
-            // Just pretend it worked for now
-            completion(true)
+        defer { isLoading = false }
+        do {
+            // Use the email as the username to keep the existing form simple.
+            try await APIClient.shared.register(RegisterRequest(username: trimmedEmail, email: trimmedEmail,
+                password: password, fullName: name.trimmingCharacters(in: .whitespacesAndNewlines)))
+            return true
+        } catch {
+            errorMessage = error.localizedDescription
+            return false
         }
     }
 }

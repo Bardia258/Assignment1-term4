@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     
     @AppStorage("authToken") var authToken: String = ""
+    @EnvironmentObject var guideManager: VotingGuideManager
     
     var body: some View {
         TabView {
@@ -34,12 +35,16 @@ struct ContentView: View {
                 Label("Account", systemImage: "person.circle")
             }
         }
+        .task(id: authToken) {
+            await guideManager.load(token: authToken)
+        }
     }
 }
 
 struct MunicipalityListView: View {
     @State private var municipalities: [Municipality] = []
     @State private var isLoading = false
+    @State private var errorMessage: String?
     
     var body: some View {
         NavigationStack {
@@ -59,18 +64,32 @@ struct MunicipalityListView: View {
             .overlay {
                 if isLoading {
                     ProgressView("Loading...")
+                } else if let error = errorMessage {
+                    VStack(spacing: 12) {
+                        Text(error).foregroundColor(.red)
+                        Button("Retry") { Task { await loadMunicipalities() } }
+                    }
+                    .padding()
+                } else if municipalities.isEmpty {
+                    Text("No municipalities available.").foregroundColor(.secondary)
                 }
             }
+            .refreshable { await loadMunicipalities() }
             .task {
-                // This runs when the view loads
-                isLoading = true
-                do {
-                    municipalities = try await MockAPIClient.shared.fetchMunicipalities()
-                } catch {
-                    print("Error: \(error)")
-                }
-                isLoading = false
+                await loadMunicipalities()
             }
+        }
+    }
+
+    @MainActor
+    private func loadMunicipalities() async {
+        isLoading = true
+        errorMessage = nil
+        defer { isLoading = false }
+        do {
+            municipalities = try await APIClient.shared.fetchMunicipalities()
+        } catch {
+            if !Task.isCancelled { errorMessage = error.localizedDescription }
         }
     }
 }
@@ -79,12 +98,13 @@ struct MunicipalityDetailView: View {
     let municipality: Municipality
     @State private var candidates: [Candidate] = []
     @State private var isLoading = false
+    @State private var errorMessage: String?
     
     var body: some View {
         List {
             Section("About") {
                 Text(municipality.description)
-                Text("Election: \(municipality.electionDate)")
+                Text("Election: \(municipality.formattedElectionDate)")
                     .font(.footnote)
                     .foregroundColor(.red)
             }
@@ -92,6 +112,9 @@ struct MunicipalityDetailView: View {
             Section("Candidates") {
                 if isLoading {
                     ProgressView()
+                } else if let error = errorMessage {
+                    Text(error).foregroundColor(.red)
+                    Button("Retry") { Task { await loadCandidates() } }
                 } else if candidates.isEmpty {
                     Text("No candidates yet.")
                         .foregroundColor(.secondary)
@@ -104,7 +127,6 @@ struct MunicipalityDetailView: View {
                                 Text(candidate.positionTitle)
                                     .font(.subheadline)
                                     .foregroundColor(.blue)
-                                // FIXED: Changed bio to profile
                                 Text(candidate.profile)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
@@ -117,14 +139,21 @@ struct MunicipalityDetailView: View {
             }
         }
         .navigationTitle(municipality.name)
+        .refreshable { await loadCandidates() }
         .task {
-            isLoading = true
-            do {
-                candidates = try await MockAPIClient.shared.fetchCandidates(for: municipality.id)
-            } catch {
-                print("Error: \(error)")
-            }
-            isLoading = false
+            await loadCandidates()
+        }
+    }
+
+    @MainActor
+    private func loadCandidates() async {
+        isLoading = true
+        errorMessage = nil
+        defer { isLoading = false }
+        do {
+            candidates = try await APIClient.shared.fetchCandidates(for: municipality.id)
+        } catch {
+            if !Task.isCancelled { errorMessage = error.localizedDescription }
         }
     }
 }
@@ -132,4 +161,5 @@ struct MunicipalityDetailView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(VotingGuideManager())
 }

@@ -4,13 +4,14 @@ struct CandidateDetailView: View {
     let candidate: Candidate
     
     @EnvironmentObject var guideManager: VotingGuideManager
+    @AppStorage("authToken") private var authToken = ""
     
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
                 
                 // Photo Area
-                if let photoUrl = candidate.photoUrl, let url = URL(string: photoUrl) {
+                if let url = APIClient.imageURL(for: candidate.photoUrl) {
                     AsyncImage(url: url) { image in
                         image.resizable().scaledToFill()
                     } placeholder: {
@@ -82,13 +83,23 @@ struct CandidateDetailView: View {
                 .padding(.horizontal)
                 .padding(.bottom, 30)
                 
-                // Add to Guide Button (We will wire this up in Step 3)
+                if authToken.isEmpty {
+                    Text("Log in from the Account tab to save candidates to your voting guide.")
+                        .font(.footnote)
+                        .foregroundColor(.secondary)
+                        .padding(.horizontal)
+                }
+
+                if let error = guideManager.errorMessage {
+                    Text(error)
+                        .foregroundColor(.red)
+                        .padding(.horizontal)
+                }
+
                 Button(action: {
-                    // Action goes here
-                    guideManager.add(candidate: candidate)
-                    print("Added \(candidate.name) to guide")
+                    Task { await guideManager.add(candidate: candidate, token: authToken) }
                 }) {
-                    Text(guideManager.isInGuide(candidate: candidate) ? "Added to Guide!" : "Add to My Voting Guide")
+                    Text(guideManager.isLoading ? "Updating Guide..." : (guideManager.isInGuide(candidate: candidate) ? "Added to Guide!" : "Add to My Voting Guide"))
                         .font(.headline)
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -98,7 +109,7 @@ struct CandidateDetailView: View {
                 }
                 .padding(.horizontal)
                 .padding(.bottom, 30)
-                .disabled(guideManager.isInGuide(candidate: candidate))
+                .disabled(authToken.isEmpty || guideManager.isLoading || guideManager.isInGuide(candidate: candidate))
             }
         }
         .navigationTitle("Candidate Profile")
@@ -109,5 +120,6 @@ struct CandidateDetailView: View {
 #Preview {
     NavigationStack {
         CandidateDetailView(candidate: Candidate(id: 1, name: "John Doe", profile: "Experienced leader with 10 years of city council experience.", photoUrl: nil, website: "johndoe.ca", email: "john@example.com", positionTitle: "Mayor", municipalityId: 1))
+            .environmentObject(VotingGuideManager())
     }
 }

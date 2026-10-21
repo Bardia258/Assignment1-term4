@@ -25,12 +25,17 @@ struct RegisterView: View {
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
                 
-                SecureField("Password (min 6 chars)", text: $viewModel.password)
+                SecureField("Password", text: $viewModel.password)
                     .padding()
                     .background(Color(.systemGray6))
                     .cornerRadius(10)
             }
             .padding(.horizontal)
+
+            Text("Use at least 6 characters, including uppercase, lowercase, a number, and a symbol.")
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .padding(.horizontal)
             
             if let error = viewModel.errorMessage {
                 Text(error)
@@ -39,8 +44,8 @@ struct RegisterView: View {
             }
             
             Button(action: {
-                viewModel.register { success in
-                    if success {
+                Task {
+                    if await viewModel.register() {
                         dismiss() // Go back to login on success
                     }
                 }

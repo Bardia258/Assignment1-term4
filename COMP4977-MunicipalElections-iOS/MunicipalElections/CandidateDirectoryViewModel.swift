@@ -21,9 +21,11 @@ class CandidateDirectoryViewModel: ObservableObject {
         isLoading = true
         errorMessage = nil
         do {
-            candidates = try await MockAPIClient.shared.fetchAllCandidates()
+            candidates = try await APIClient.shared.fetchAllCandidates()
+        } catch is CancellationError {
+            // SwiftUI cancels the task when the view disappears.
         } catch {
-            errorMessage = "Failed to load candidates."
+            if !Task.isCancelled { errorMessage = error.localizedDescription }
         }
         isLoading = false
     }

@@ -1,36 +1,186 @@
-//
-//  MunicipalElectionsTests.swift
-//  MunicipalElectionsTests
-//
-//  Created by Omar Mohamed on 2026-10-17.
-//
-
+import Foundation
 import XCTest
 @testable import MunicipalElections
 
 final class MunicipalElectionsTests: XCTestCase {
 
+    private var session: URLSession!
+    private var client: APIClient!
+
+    private static let candidateJSON = """
+    {"id":42,"name":"Alex Lee","profile":"Community advocate","photoUrl":"/uploads/candidates/photo.jpg",
+     "website":null,"email":"alex@example.com","positionTitle":"Mayor","municipalityId":7,
+     "municipalityName":"Pitt Meadows","dateCreated":"2026-10-17T00:00:00","positionId":3}
+    """
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [StubURLProtocol.self]
+        session = URLSession(configuration: configuration)
+        client = APIClient(session: session)
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        session.invalidateAndCancel()
+        StubURLProtocol.handler = nil
+        client = nil
+        session = nil
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testDirectoryDecodesBackendJSONAndRelativeImages() async throws {
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.url?.host, APIClient.baseURL.host)
+            XCTAssertNil(request.value(forHTTPHeaderField: "Authorization"))
+            switch request.url?.path {
+            case "/api/municipalities":
+                return (200, Data("""
+                [{"id":7,"name":"Pitt Meadows","province":"BC","electionDate":"2026-10-17T00:00:00",
+                  "description":"City of Pitt Meadows","logoUrl":null}]
+                """.utf8))
+            case "/api/candidates":
+                return (200, Data("[\(Self.candidateJSON)]".utf8))
+            default:
+                XCTFail("Unexpected route: \(request.url?.path ?? "")")
+                return (404, Data())
+            }
+        }
+        let municipalities = try await client.fetchMunicipalities()
+        XCTAssertEqual(municipalities.first?.electionDate, "2026-10-17T00:00:00")
+        XCTAssertEqual(municipalities.first?.formattedElectionDate, "Oct 17, 2026")
+        let candidates = try await client.fetchAllCandidates()
+        XCTAssertEqual(candidates.first?.id, 42)
+        XCTAssertEqual(APIClient.imageURL(for: candidates.first?.photoUrl)?.absoluteString,
+                       APIClient.baseURL.absoluteString + "uploads/candidates/photo.jpg")
+        XCTAssertNil(APIClient.imageURL(for: nil))
+        XCTAssertEqual(APIClient.imageURL(for: "https://example.com/photo.jpg")?.host, "example.com")
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testCandidatesAreFilteredUsingMunicipalityQueryParameter() async throws {
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.url?.path, "/api/candidates")
+            let query = URLComponents(url: try XCTUnwrap(request.url), resolvingAgainstBaseURL: true)?.queryItems
+            XCTAssertEqual(query?.first(where: { $0.name == "municipalityId" })?.value, "7")
+            return (200, Data("[]".utf8))
+        }
+        let candidates = try await client.fetchCandidates(for: 7)
+        XCTAssertTrue(candidates.isEmpty)
+    }
+
+    func testLoginSendsUsernameAndReturnsServerToken() async throws {
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.url?.path, "/api/auth/login")
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/json")
+            let body = try Self.jsonBody(request)
+            XCTAssertEqual(body["username"] as? String, "voter@example.com")
+            XCTAssertEqual(body["password"] as? String, "Password1!")
+            XCTAssertNil(body["email"])
+            return (200, Data(#"{"token":"server-issued-token"}"#.utf8))
+        }
+        let response = try await client.login(LoginRequest(username: "voter@example.com", password: "Password1!"))
+        XCTAssertEqual(response.token, "server-issued-token")
+    }
+
+    func testRegistrationAcceptsCreatedResponseWithoutToken() async throws {
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.url?.path, "/api/auth/register")
+            XCTAssertEqual(request.httpMethod, "POST")
+            let body = try Self.jsonBody(request)
+            XCTAssertEqual(body["username"] as? String, "voter@example.com")
+            XCTAssertEqual(body["email"] as? String, "voter@example.com")
+            XCTAssertEqual(body["fullName"] as? String, "Alex Lee")
+            return (201, Data(#"{"id":"user-id","username":"voter@example.com"}"#.utf8))
+        }
+        try await client.register(RegisterRequest(username: "voter@example.com", email: "voter@example.com",
+                                                   password: "Password1!", fullName: "Alex Lee"))
+    }
+
+    func testSavedCandidatesUseBearerTokenAndDeleteSavedRecordID() async throws {
+        let savedJSON = "{\"id\":91,\"candidateId\":42,\"dateSaved\":\"2026-10-21T12:00:00Z\",\"candidate\":\(Self.candidateJSON)}"
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Bearer voter-token")
+            switch request.httpMethod {
+            case "GET":
+                XCTAssertEqual(request.url?.path, "/api/savedcandidates")
+                return (200, Data("[\(savedJSON)]".utf8))
+            case "POST":
+                XCTAssertEqual(request.url?.path, "/api/savedcandidates")
+                XCTAssertEqual(try Self.jsonBody(request)["candidateId"] as? Int, 42)
+                return (201, Data(savedJSON.utf8))
+            case "DELETE":
+                XCTAssertEqual(request.url?.path, "/api/savedcandidates/91")
+                return (204, Data())
+            default:
+                XCTFail("Unexpected method")
+                return (405, Data())
+            }
+        }
+        let saved = try await client.fetchSavedCandidates(token: "voter-token")
+        XCTAssertEqual(saved.first?.candidate.id, 42)
+        let created = try await client.saveCandidate(id: 42, token: "voter-token")
+        XCTAssertEqual(created.id, 91)
+        try await client.deleteSavedCandidate(id: created.id, token: "voter-token")
+    }
+
+    func testValidationErrorsAreShownFromBackend() async throws {
+        StubURLProtocol.handler = { _ in
+            (400, Data(#"{"title":"Validation failed","errors":{"Password":["Passwords must have at least one digit."]}}"#.utf8))
+        }
+        do {
+            try await client.register(RegisterRequest(username: "voter@example.com", email: "voter@example.com",
+                                                       password: "password", fullName: "Alex Lee"))
+            XCTFail("Expected the validation request to fail")
+        } catch let error as APIError {
+            XCTAssertEqual(error.statusCode, 400)
+            XCTAssertEqual(error.localizedDescription, "Passwords must have at least one digit.")
         }
     }
 
+    func testUnauthorizedResponseIsNotDecodedAsSuccess() async throws {
+        StubURLProtocol.handler = { _ in (401, Data()) }
+        do {
+            _ = try await client.fetchSavedCandidates(token: "expired-token")
+            XCTFail("Expected expired authentication to fail")
+        } catch let error as APIError {
+            XCTAssertEqual(error.statusCode, 401)
+            XCTAssertTrue(error.localizedDescription.contains("log in again"))
+        }
+    }
+
+    private static func jsonBody(_ request: URLRequest) throws -> [String: Any] {
+        var data = request.httpBody ?? Data()
+        if data.isEmpty, let stream = request.httpBodyStream {
+            stream.open()
+            defer { stream.close() }
+            var buffer = [UInt8](repeating: 0, count: 1024)
+            while stream.hasBytesAvailable {
+                let count = stream.read(&buffer, maxLength: buffer.count)
+                guard count > 0 else { break }
+                data.append(contentsOf: buffer.prefix(count))
+            }
+        }
+        return try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+    }
+
+}
+
+private final class StubURLProtocol: URLProtocol {
+    static var handler: ((URLRequest) throws -> (Int, Data))?
+
+    override class func canInit(with request: URLRequest) -> Bool { true }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+    override func startLoading() {
+        do {
+            let handler = try XCTUnwrap(Self.handler)
+            let (status, data) = try handler(request)
+            let response = try XCTUnwrap(HTTPURLResponse(url: try XCTUnwrap(request.url), statusCode: status,
+                httpVersion: nil, headerFields: ["Content-Type": "application/json"]))
+            client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+            client?.urlProtocol(self, didLoad: data)
+            client?.urlProtocolDidFinishLoading(self)
+        } catch { client?.urlProtocol(self, didFailWithError: error) }
+    }
+
+    override func stopLoading() { }
 }
