@@ -4,6 +4,7 @@ namespace MunicipalElections.Web.Models;
 
 public class Candidate
 {
+    public ICollection<SavedCandidate> SavedCandidates { get; set; } = new List<SavedCandidate>();
     public int CandidateId { get; set; }
 
     [ConcurrencyCheck]

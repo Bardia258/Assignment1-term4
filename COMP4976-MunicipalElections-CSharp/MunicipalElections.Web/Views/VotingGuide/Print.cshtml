@@ -29,7 +29,6 @@
 
     <div class="text-center mb-5">
         <h1 class="display-5 fw-bold">Municipal Elections Guide</h1>
-        <h4 class="text-muted">Election Date: October 17, 2026</h4>
         <p class="mb-0">Printed on: @printDate</p>
         <hr />
     </div>
@@ -49,7 +48,7 @@
                         @if (!string.IsNullOrEmpty(candidate.PhotoUrl))
                         {
                             <div class="col-2">
-                                <img src="~/images/candidates/@candidate.PhotoUrl" class="img-fluid rounded" alt="@candidate.Name" />
+                                <img src="@candidate.PhotoUrl" class="img-fluid rounded" alt="@candidate.Name" />
                             </div>
                         }
                         
@@ -57,6 +56,7 @@
                             <h3 class="fw-bold mb-1">@candidate.Name</h3>
                             <h5 class="text-primary mb-2">@candidate.PositionTitle</h5>
                             <p class="mb-0"><strong>Municipality:</strong> @candidate.MunicipalityName</p>
+                            <p class="mb-0"><strong>Election Date:</strong> @candidate.MunicipalityElectionDate.ToString("MMMM dd, yyyy")</p>
                         </div>
                     </div>
                 </div>

@@ -9,6 +9,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     public DbSet<Municipality> Municipalities => Set<Municipality>();
     public DbSet<Position> Positions => Set<Position>();
     public DbSet<Candidate> Candidates => Set<Candidate>();
+    public DbSet<SavedCandidate> SavedCandidates => Set<SavedCandidate>();
     public DbSet<MunicipalityAdminGroup> MunicipalityAdminGroups => Set<MunicipalityAdminGroup>();
 
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
@@ -33,6 +34,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
+
+        builder.Entity<SavedCandidate>().HasIndex(s => new { s.UserId, s.CandidateId }).IsUnique();
+        builder.Entity<SavedCandidate>().HasOne(s => s.User).WithMany(u => u.SavedCandidates)
+            .HasForeignKey(s => s.UserId).OnDelete(DeleteBehavior.Cascade);
+        builder.Entity<SavedCandidate>().HasOne(s => s.Candidate).WithMany(c => c.SavedCandidates)
+            .HasForeignKey(s => s.CandidateId).OnDelete(DeleteBehavior.Cascade);
 
         builder.Entity<Municipality>().Property(m => m.Name).UseCollation("NOCASE");
         builder.Entity<Municipality>().Property(m => m.Province).UseCollation("NOCASE");

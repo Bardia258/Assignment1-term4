@@ -33,8 +33,9 @@ namespace MunicipalElections.Web.Controllers
             return View(candidates);
         }
 
-        public IActionResult Add(int id)
+        public async Task<IActionResult> Add(int id)
         {
+            if (await _candidateService.GetCandidateByIdAsync(id) is null) return NotFound();
             var guideIds = HttpContext.Session.Get<List<int>>("VotingGuide") ?? new List<int>();
             
             // Add the ID if it's not already in the list
@@ -46,7 +47,12 @@ namespace MunicipalElections.Web.Controllers
             }
 
             // Send the user back to the page they came from
-            return Redirect(Request.Headers["Referer"].ToString());
+            var referer = Request.Headers["Referer"].ToString();
+            if (Uri.TryCreate(referer, UriKind.Absolute, out var uri)
+                && string.Equals(uri.Authority, Request.Host.Value, StringComparison.OrdinalIgnoreCase)
+                && string.Equals(uri.Scheme, Request.Scheme, StringComparison.OrdinalIgnoreCase))
+                referer = uri.PathAndQuery;
+            return Url.IsLocalUrl(referer) ? LocalRedirect(referer) : RedirectToAction("Index", "Candidates");
         }
 
         public IActionResult Remove(int id)

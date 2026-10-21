@@ -24,7 +24,7 @@
                 <div class="card h-100 shadow-sm border-primary">
                     @if (!string.IsNullOrEmpty(candidate.PhotoUrl))
                     {
-                        <img src="~/images/candidates/@candidate.PhotoUrl" class="card-img-top" alt="@candidate.Name" style="height: 250px; object-fit: cover;">
+                        <img src="@candidate.PhotoUrl" class="card-img-top" alt="@candidate.Name" style="height: 250px; object-fit: cover;">
                     }
                     else
                     {
