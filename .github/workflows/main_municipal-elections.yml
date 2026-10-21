@@ -3,12 +3,22 @@ name: Build and deploy Municipal Elections
 
 on:
   workflow_dispatch:
+    inputs:
+      runtime:
+        description: 'Match Azure App Service Platform: win-x86 = 32 Bit; win-x64 = 64 Bit'
+        required: true
+        default: win-x86
+        type: choice
+        options:
+          - win-x86
+          - win-x64
 
 permissions:
   contents: read
 
 env:
   PROJECT_PATH: COMP4976-MunicipalElections-CSharp/MunicipalElections.Web/MunicipalElections.Web.csproj
+  PUBLISH_RUNTIME: ${{ inputs.runtime }}
 
 jobs:
   build:
@@ -24,13 +34,13 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Restore dependencies
-        run: dotnet restore "${{ env.PROJECT_PATH }}"
+        run: dotnet restore "${{ env.PROJECT_PATH }}" --runtime "${{ env.PUBLISH_RUNTIME }}"
 
       - name: Build application
-        run: dotnet build "${{ env.PROJECT_PATH }}" --configuration Release --no-restore
+        run: dotnet build "${{ env.PROJECT_PATH }}" --configuration Release --runtime "${{ env.PUBLISH_RUNTIME }}" --self-contained false --no-restore
 
       - name: Publish application
-        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration Release --no-restore --output "${{ github.workspace }}/publish"
+        run: dotnet publish "${{ env.PROJECT_PATH }}" --configuration Release --runtime "${{ env.PUBLISH_RUNTIME }}" --self-contained false --no-build --no-restore --output "${{ github.workspace }}/publish"
 
       - name: Upload deployment artifact
         uses: actions/upload-artifact@v4

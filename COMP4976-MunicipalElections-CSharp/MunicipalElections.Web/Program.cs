@@ -95,6 +95,16 @@ builder.Services.AddScoped<ICandidateService, CandidateService>();
 
 var app = builder.Build();
 
+// Explicit initialization only: never migrate, seed development accounts, or start
+// the web server when one of these maintenance commands is requested.
+if (args.Any(DatabaseInitialization.IsInitializationCommand))
+{
+    Environment.ExitCode = await DatabaseInitialization.RunAsync(
+        app.Services, app.Configuration, args, Console.Out, Console.Error);
+    await app.DisposeAsync();
+    return;
+}
+
 // Explicit offline migration command for deployment. Never run automatically in Production.
 if (args.Contains("--migrate-database"))
 {

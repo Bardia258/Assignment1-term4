@@ -5,7 +5,7 @@ namespace MunicipalElections.Web.Data;
 
 public static class DbSeeder
 {
-    // Called only in Development by Program.cs. Stable keys survive administrator
+    // Called in Development or explicitly by --seed-demo-data. Stable keys survive administrator
     // edits to display names, biographies, and relationships. Existing rows are never updated.
     public static async Task SeedAsync(ApplicationDbContext db, CancellationToken cancellationToken = default)
     {
@@ -39,6 +39,8 @@ public static class DbSeeder
                 m => m.SeedKey == sample.SeedKey, cancellationToken);
             if (municipality is null)
             {
+                if (await db.Municipalities.AnyAsync(m => m.Name == sample.Name && m.Province == sample.Province, cancellationToken))
+                    throw new DatabaseInitializationException($"Existing municipality conflicts with seed '{sample.SeedKey}'. No records were changed.");
                 municipality = sample;
                 db.Municipalities.Add(municipality);
                 await db.SaveChangesAsync(cancellationToken);
@@ -53,6 +55,9 @@ public static class DbSeeder
                 var key = $"{sample.SeedKey}:{positionKeys[index]}";
                 if (!await db.Positions.AnyAsync(p => p.SeedKey == key, cancellationToken))
                 {
+                    var name = names[index];
+                    if (await db.Positions.AnyAsync(p => p.MunicipalityId == municipality.MunicipalityId && p.Name == name, cancellationToken))
+                        throw new DatabaseInitializationException($"Existing position conflicts with seed '{key}'. No records were changed.");
                     db.Positions.Add(new Position
                     {
                         SeedKey = key, Name = names[index], SeatsAvailable = seats[index],
@@ -90,6 +95,10 @@ public static class DbSeeder
 
             var fullPositionKey = $"demo:{municipalityKey}:{positionKey}";
             var position = await db.Positions.SingleAsync(p => p.SeedKey == fullPositionKey, cancellationToken);
+            var normalizedName = name.ToUpperInvariant();
+            if (await db.Candidates.AnyAsync(c => c.MunicipalityId == position.MunicipalityId
+                && c.Name.Trim().ToUpper() == normalizedName, cancellationToken))
+                throw new DatabaseInitializationException($"Existing candidate conflicts with seed '{key}'. No records were changed.");
             db.Candidates.Add(new Candidate
             {
                 SeedKey = key, Name = name, Profile = profile,

@@ -25,4 +25,13 @@
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="4.151.2" />
   </ItemGroup>
 
+  <!-- SkiaSharp packages native debug symbols as runtime assets. Keep the native
+       libraries, but omit these large vendor symbols from deployment packages. -->
+  <Target Name="ExcludeSkiaSharpNativeSymbolsFromPublish" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <ResolvedFileToPublish Remove="@(ResolvedFileToPublish)"
+                             Condition="'%(ResolvedFileToPublish.Filename)' == 'libSkiaSharp' and '%(ResolvedFileToPublish.Extension)' == '.pdb'" />
+    </ItemGroup>
+  </Target>
+
 </Project>
