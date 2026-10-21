@@ -26,7 +26,7 @@ public sealed class DirectoryResponses(IImageStorage images)
 }
 
 [ApiController, AllowAnonymous, Route("api/municipalities")]
-public sealed class MunicipalitiesController(ApplicationDbContext db, IImageStorage images) : ControllerBase
+public sealed class MunicipalitiesApiController(ApplicationDbContext db, IImageStorage images) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> List(CancellationToken cancellationToken) => Ok((await db.Municipalities
@@ -59,7 +59,7 @@ public sealed class PositionsController(ApplicationDbContext db, IImageStorage i
 }
 
 [ApiController, AllowAnonymous, Route("api/candidates")]
-public sealed class CandidatesController(ApplicationDbContext db, IImageStorage images) : ControllerBase
+public sealed class CandidatesApiController(ApplicationDbContext db, IImageStorage images) : ControllerBase
 {
     [HttpGet, HttpGet("search")]
     public async Task<IActionResult> List(string? name, int? municipalityId, int? positionId, CancellationToken cancellationToken)
