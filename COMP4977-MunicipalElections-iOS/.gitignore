@@ -1,0 +1,58 @@
+# COMP4977 - SwiftUI / Xcode
+
+# Build output and archives
+DerivedData/
+build/
+.build/
+*.xcarchive/
+*.ipa
+*.app/
+*.dSYM/
+*.dSYM.zip
+
+# Personal Xcode workspace state
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.xccheckout
+
+# Local configuration, credentials, and signing material
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer
+*.p8
+*.mobileprovision
+
+# Local SQLite databases and their sidecar files
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+*.sqlite-journal
+*.sqlite3
+*.sqlite3-shm
+*.sqlite3-wal
+*.sqlite3-journal
+
+# Operating system, editor, and temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+*.swp
+*.swo
+*~
+*.log
+*.tmp
+*.temp
+
+# Keep Swift source, Xcode projects/workspaces, shared schemes,
+# Package.resolved, asset catalogs, tests, and documentation in Git.

@@ -1,37 +1,10 @@
-# =============================================
-# COMP4976 - Municipal Elections Management System
-# Place this file in the Git repository root.
-# =============================================
+# COMP4976 - ASP.NET Core MVC / shared Web API
 
-# Local test project
-MunicipalElections.DatabaseTests/
-
-# Database files
-*.db
-*.db-shm
-*.db-wal
-*.sqlite
-*.sqlite3
-
-# Local configuration
-**/appsettings.Development.json
-.env
-.env.*
-
-# Build output
-**/bin/
-**/obj/
+# Build output, test results, and Visual Studio state
+bin/
+obj/
 .vs/
-
-# Temporary files
-*.log
 TestResults/
-
-# ----- .NET / Visual Studio -----
-**/bin/
-**/obj/
-.vs/
-**/TestResults/
 *.user
 *.suo
 *.userosscache
@@ -40,12 +13,10 @@ TestResults/
 *.vspscc
 *.vssscc
 
-# ----- Local configuration and secrets -----
-# Keep appsettings.json in Git, without passwords/secrets.
-# The C# assignment requires excluding the Development file.
-**/appsettings.Development.json
-**/appsettings.Local.json
-**/appsettings.*.local.json
+# Local configuration and credentials
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
 .env
 .env.*
 !.env.example
@@ -55,22 +26,25 @@ TestResults/
 *.key
 *.cer
 
-# ----- Local SQLite databases -----
-# Commit EF Core migrations and seed code, not local database files.
+# Local SQLite databases and their sidecar files
 *.db
 *.db-shm
 *.db-wal
 *.db-journal
 *.sqlite
-*.sqlite3
 *.sqlite-shm
 *.sqlite-wal
 *.sqlite-journal
+*.sqlite3
 *.sqlite3-shm
 *.sqlite3-wal
 *.sqlite3-journal
 
-# ----- Operating systems / IDEs -----
+# Uploaded files and local Python caches
+**/App_Data/uploads/
+__pycache__/
+
+# Operating system, editor, and temporary files
 .DS_Store
 Thumbs.db
 Desktop.ini
@@ -78,17 +52,9 @@ Desktop.ini
 *.swp
 *.swo
 *~
-
-# ----- Logs and temporary files -----
 *.log
 *.tmp
 *.temp
 
-# IMPORTANT: Keep these in Git:
-# *.sln / *.slnx, *.csproj, EF Core Migrations/, source files, docs/.
-
-.README.md
-
-# Local uploaded images and Python test cache
-**/App_Data/uploads/
-**/__pycache__/
+# Keep solution/project files, source, migrations, tests, documentation,
+# appsettings.json, and appsettings.Development.example.json in Git.
