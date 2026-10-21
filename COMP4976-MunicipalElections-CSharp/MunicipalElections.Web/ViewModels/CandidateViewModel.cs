@@ -9,10 +9,12 @@ namespace MunicipalElections.Web.ViewModels
         public string PositionTitle { get; set; } = string.Empty;
         public int MunicipalityId { get; set; }
         public string MunicipalityName { get; set; } = string.Empty;
+        public string MunicipalityLogoUrl { get; set; } = string.Empty;
         public DateTime MunicipalityElectionDate { get; set; }
         public string Profile { get; set; } = string.Empty;
         public string Website { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public int PositionId { get; set; }
+        public DateTime DateCreated { get; set; }
     }
 }

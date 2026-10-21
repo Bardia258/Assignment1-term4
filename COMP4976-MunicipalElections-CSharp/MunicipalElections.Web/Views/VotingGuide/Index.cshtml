@@ -29,7 +29,9 @@ else
                         <div>
                             <h5 class="card-title mb-1">@candidate.Name</h5>
                             <h6 class="card-subtitle text-success">@candidate.PositionTitle</h6>
-                            <small class="text-muted">@candidate.MunicipalityName</small>
+                            <div class="text-muted mt-2">
+                                <partial name="_MunicipalityBadge" model="@(new MunicipalElections.Web.ViewModels.MunicipalityViewModel { Name = candidate.MunicipalityName, LogoUrl = candidate.MunicipalityLogoUrl })" />
+                            </div>
                         </div>
                         <div>
                             <a asp-action="Remove" asp-route-id="@candidate.Id" class="btn btn-outline-danger btn-sm">Remove</a>

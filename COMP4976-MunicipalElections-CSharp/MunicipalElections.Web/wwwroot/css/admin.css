@@ -4,5 +4,5 @@
 .biography { white-space: pre-wrap; overflow-wrap: anywhere; }
 .table td, .table th { vertical-align: middle; }
 .table .actions { min-width: 190px; }
-.field-validation-error, .validation-summary-errors { color: #b02a37; }
+.field-validation-error, .validation-summary-errors { color: var(--bs-danger-text-emphasis); }
 .card { border: 0; box-shadow: 0 .125rem .4rem #00000012; }

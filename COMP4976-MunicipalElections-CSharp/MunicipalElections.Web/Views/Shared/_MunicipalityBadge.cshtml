@@ -1,0 +1,17 @@
+@model MunicipalElections.Web.ViewModels.MunicipalityViewModel
+@{
+    var hasLogo = !string.IsNullOrWhiteSpace(Model.LogoUrl);
+    var initials = string.Concat(Model.Name.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+        .Take(2).Select(word => char.ToUpperInvariant(word[0])));
+}
+<span class="municipality-badge">
+    <span class="municipality-logo-container" aria-hidden="true">
+        @if (hasLogo)
+        {
+            <img src="@Url.Content("~" + Model.LogoUrl)" class="municipality-logo" alt="" loading="lazy"
+                 onerror="this.hidden = true; this.nextElementSibling.hidden = false;" />
+        }
+        <span class="municipality-logo municipality-logo-placeholder" hidden="@hasLogo">@initials</span>
+    </span>
+    <span>@Model.Name</span>
+</span>

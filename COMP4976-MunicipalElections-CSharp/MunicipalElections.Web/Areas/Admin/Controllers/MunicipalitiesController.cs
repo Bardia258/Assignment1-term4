@@ -40,7 +40,7 @@ public sealed class MunicipalitiesController(ApplicationDbContext db, AdminAcces
                 Db.MunicipalityAdminGroups.Add(new MunicipalityAdminGroup { MunicipalityId = item.MunicipalityId, RoleId = role.Id });
                 await Db.SaveChangesAsync();
             })) return View(model);
-        return RedirectToAction(nameof(Details), new { id = item.MunicipalityId });
+        return RedirectToAction(nameof(Details), "Municipalities", new { area = "Admin", id = item.MunicipalityId });
     }
     [HttpGet]
     public async Task<IActionResult> Edit([FromRoute] int id)
@@ -61,7 +61,7 @@ public sealed class MunicipalitiesController(ApplicationDbContext db, AdminAcces
         item.Name = model.Name.Trim(); item.Province = model.Province.Trim(); item.ElectionDate = model.ElectionDate!.Value.Date;
         item.Description = model.Description?.Trim() ?? string.Empty;
         if (!await PersistAsync(item, model.Revision, model.Image, "logos", name => item.LogoFileName = name, oldImage)) return View(model);
-        return RedirectToAction(nameof(Details), new { id });
+        return RedirectToAction(nameof(Details), "Municipalities", new { area = "Admin", id });
     }
     [HttpGet]
     public async Task<IActionResult> Delete([FromRoute] int id)
@@ -87,7 +87,7 @@ public sealed class MunicipalitiesController(ApplicationDbContext db, AdminAcces
         if (group is not null) Db.Remove(group);
         Db.Remove(item);
         if (!await PersistAsync(item, revision, category: "logos", oldImage: item.LogoFileName)) return View("Delete", item);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "Municipalities", new { area = "Admin" });
     }
     private async Task ValidateAsync(MunicipalityInput model, int id = 0)
     {

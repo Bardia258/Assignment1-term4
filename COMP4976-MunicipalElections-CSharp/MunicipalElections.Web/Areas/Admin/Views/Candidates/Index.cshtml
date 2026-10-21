@@ -1,15 +1,15 @@
 @model IEnumerable<Candidate>
 @{ ViewData["Title"] = "Candidates"; }
-<div class="d-flex justify-content-between align-items-center mb-3"><h1>Candidates</h1><a asp-action="Create" class="btn btn-primary">Create candidate</a></div>
-<form method="get" class="row g-2 mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3"><h1>Candidates</h1><a asp-area="Admin" asp-controller="Candidates" asp-action="Create" class="btn btn-primary">Create candidate</a></div>
+<form asp-area="Admin" asp-controller="Candidates" asp-action="Index" method="get" class="row g-2 mb-3">
     <div class="col-sm-5"><label for="search" class="visually-hidden">Candidate name</label><input id="search" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search candidate names" maxlength="100" /></div>
     <div class="col-sm-4"><label for="municipalityId" class="visually-hidden">Municipality</label><select id="municipalityId" name="municipalityId" class="form-select" asp-items="ViewBag.Municipalities"><option value="">All authorized municipalities</option></select></div>
-    <div class="col-sm-3"><button class="btn btn-outline-primary">Filter</button> <a asp-action="Index" class="btn btn-outline-secondary">Clear</a></div>
+    <div class="col-sm-3"><button class="btn btn-outline-primary">Filter</button> <a asp-area="Admin" asp-controller="Candidates" asp-action="Index" class="btn btn-outline-secondary">Clear</a></div>
 </form>
-<div class="table-responsive"><table class="table table-striped bg-white"><thead><tr><th>Photo</th><th>Name</th><th>Municipality</th><th>Position</th><th>Contact</th><th>Actions</th></tr></thead><tbody>
+<div class="table-responsive"><table class="table table-striped bg-body"><thead><tr><th>Photo</th><th>Name</th><th>Municipality</th><th>Position</th><th>Contact</th><th>Actions</th></tr></thead><tbody>
 @foreach (var item in Model)
 {
-    <tr><td>@if (Images.Url(item.PhotoFileName, "candidates") is string imageUrl) { <img src="@Url.Content("~" + imageUrl)" class="admin-thumb" alt="Photograph of @item.Name" /> } else { <span class="text-muted">No photo</span> }</td><td>@item.Name</td><td>@item.Municipality.Name</td><td>@item.Position.Name</td><td>@item.Email<br />@item.Website</td><td class="actions"><a asp-action="Details" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-secondary">Details</a> <a asp-action="Edit" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-primary">Edit</a> <a asp-action="Delete" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-danger">Delete</a></td></tr>
+    <tr><td>@if (Images.Url(item.PhotoFileName, "candidates") is string imageUrl) { <img src="@Url.Content("~" + imageUrl)" class="admin-thumb" alt="Photograph of @item.Name" /> } else { <span class="text-muted">No photo</span> }</td><td>@item.Name</td><td>@item.Municipality.Name</td><td>@item.Position.Name</td><td>@item.Email<br />@item.Website</td><td class="actions"><a asp-area="Admin" asp-controller="Candidates" asp-action="Details" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-secondary">Details</a> <a asp-area="Admin" asp-controller="Candidates" asp-action="Edit" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-primary">Edit</a> <a asp-area="Admin" asp-controller="Candidates" asp-action="Delete" asp-route-id="@item.CandidateId" class="btn btn-sm btn-outline-danger">Delete</a></td></tr>
 }
 </tbody></table></div>
 @if (!Model.Any()) { <p>No candidates match these filters.</p> }

@@ -50,12 +50,15 @@ struct MunicipalityListView: View {
         NavigationStack {
             List(municipalities) { muni in
                 NavigationLink(destination: MunicipalityDetailView(municipality: muni)) {
-                    VStack(alignment: .leading) {
-                        Text(muni.name)
-                            .font(.headline)
-                        Text(muni.province)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
+                    HStack(spacing: 12) {
+                        MunicipalityLogo(logoUrl: muni.logoUrl, size: 44)
+                        VStack(alignment: .leading) {
+                            Text(muni.name)
+                                .font(.headline)
+                            Text(muni.province)
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                        }
                     }
                     .padding(.vertical, 4)
                 }
@@ -103,6 +106,8 @@ struct MunicipalityDetailView: View {
     var body: some View {
         List {
             Section("About") {
+                MunicipalityLabel(name: municipality.name, logoUrl: municipality.logoUrl, size: 48)
+                    .font(.headline)
                 Text(municipality.description)
                 Text("Election: \(municipality.formattedElectionDate)")
                     .font(.footnote)
@@ -127,6 +132,9 @@ struct MunicipalityDetailView: View {
                                 Text(candidate.positionTitle)
                                     .font(.subheadline)
                                     .foregroundColor(.blue)
+                                MunicipalityLabel(name: municipality.name, logoUrl: municipality.logoUrl)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
                                 Text(candidate.profile)
                                     .font(.caption)
                                     .foregroundColor(.secondary)

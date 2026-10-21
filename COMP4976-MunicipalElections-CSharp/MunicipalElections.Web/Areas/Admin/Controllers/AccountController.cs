@@ -56,7 +56,7 @@ public sealed class AccountController(
     public async Task<IActionResult> Logout()
     {
         await signIn.SignOutAsync();
-        return RedirectToAction(nameof(Login));
+        return RedirectToAction(nameof(Login), "Account", new { area = "Admin" });
     }
 
     private string SafeReturnUrl(string? returnUrl) => Url.IsLocalUrl(returnUrl)

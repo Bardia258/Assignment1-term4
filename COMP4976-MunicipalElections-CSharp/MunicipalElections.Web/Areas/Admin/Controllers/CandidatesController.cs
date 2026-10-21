@@ -60,7 +60,7 @@ public sealed class CandidatesController(ApplicationDbContext db, AdminAccessSer
             Copy(model, item);
             Db.Add(item);
             if (await PersistAsync(item, image: model.Image, assignImage: name => item.PhotoFileName = name))
-                return RedirectToAction(nameof(Details), new { id = item.CandidateId });
+                return RedirectToAction(nameof(Details), "Candidates", new { area = "Admin", id = item.CandidateId });
         }
         await OptionsAsync(model);
         return View(model);
@@ -90,7 +90,7 @@ public sealed class CandidatesController(ApplicationDbContext db, AdminAccessSer
             var oldImage = item.PhotoFileName;
             Copy(model, item); // DateCreated, SeedKey, and image filename are never bound from input.
             if (await PersistAsync(item, model.Revision, model.Image, assignImage: name => item.PhotoFileName = name, oldImage: oldImage))
-                return RedirectToAction(nameof(Details), new { id });
+                return RedirectToAction(nameof(Details), "Candidates", new { area = "Admin", id });
         }
         await OptionsAsync(model);
         return View(model);
@@ -110,7 +110,7 @@ public sealed class CandidatesController(ApplicationDbContext db, AdminAccessSer
         if (!await Access.CanManageCandidateAsync(User, id)) return Forbid();
         Db.Remove(item);
         if (!await PersistAsync(item, revision, oldImage: item.PhotoFileName)) return View("Delete", item);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "Candidates", new { area = "Admin" });
     }
     [HttpGet]
     public async Task<IActionResult> PositionOptions(int municipalityId)

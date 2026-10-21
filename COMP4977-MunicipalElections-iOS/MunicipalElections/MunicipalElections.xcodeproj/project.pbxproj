@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A12000013088000000000001 /* MunicipalityLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A12000013088000000000002 /* MunicipalityLabel.swift */; };
 		9AA24D373086FA7A002131F1 /* CandidateDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */; };
 		9AA24D393086FF4A002131F1 /* VotingGuideManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */; };
 		9AA24D3B30870023002131F1 /* VotingGuideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA24D3A30870023002131F1 /* VotingGuideView.swift */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A12000013088000000000002 /* MunicipalityLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MunicipalityLabel.swift; sourceTree = "<group>"; };
 		9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateDetailView.swift; sourceTree = "<group>"; };
 		9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingGuideManager.swift; sourceTree = "<group>"; };
 		9AA24D3A30870023002131F1 /* VotingGuideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotingGuideView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				9AA24D383086FF4A002131F1 /* VotingGuideManager.swift */,
 				9AA24D363086FA7A002131F1 /* CandidateDetailView.swift */,
 				9AF3757830848BB900A33A48 /* APIClient.swift */,
+				A12000013088000000000002 /* MunicipalityLabel.swift */,
 				9AF3757630848B9300A33A48 /* Models.swift */,
 				9AF3754B30848AC000A33A48 /* MunicipalElections */,
 				9AF3755C30848AC200A33A48 /* MunicipalElectionsTests */,
@@ -293,6 +296,7 @@
 				9AF3757730848B9300A33A48 /* Models.swift in Sources */,
 				9AA24D4130870810002131F1 /* RegisterView.swift in Sources */,
 				9AF3757930848BB900A33A48 /* APIClient.swift in Sources */,
+				A12000013088000000000001 /* MunicipalityLabel.swift in Sources */,
 				9AF3754F30848AC000A33A48 /* ContentView.swift in Sources */,
 				9AA24D3F308707DB002131F1 /* LoginView.swift in Sources */,
 				9AA24D3B30870023002131F1 /* VotingGuideView.swift in Sources */,

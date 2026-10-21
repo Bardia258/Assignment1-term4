@@ -41,7 +41,7 @@ public sealed class MunicipalitiesApiController(ApplicationDbContext db, IImageS
 }
 
 [ApiController, AllowAnonymous, Route("api/positions")]
-public sealed class PositionsController(ApplicationDbContext db, IImageStorage images) : ControllerBase
+public sealed class PositionsApiController(ApplicationDbContext db, IImageStorage images) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> List(int? municipalityId, CancellationToken cancellationToken) => Ok((await db.Positions

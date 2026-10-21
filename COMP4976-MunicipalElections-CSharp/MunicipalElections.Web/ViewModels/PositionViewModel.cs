@@ -4,6 +4,6 @@ namespace MunicipalElections.Web.ViewModels
     {
         public int Id {get; set;}
         public string Name {get; set;} = string.Empty;
-        public int SeatsaVAILABLE {get; set;}
+        public int SeatsAvailable {get; set;}
     }
 }

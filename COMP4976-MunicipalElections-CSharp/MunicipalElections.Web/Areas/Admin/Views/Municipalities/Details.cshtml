@@ -4,6 +4,6 @@
 <partial name="_SeedNotice" model="@(Model.SeedKey ?? string.Empty)" />
 <div asp-validation-summary="All" class="text-danger" role="alert"></div>
 <div class="card card-body mb-3"><partial name="_Details" model="Model" /></div>
-<a asp-action="Edit" asp-route-id="@Model.MunicipalityId" class="btn btn-primary">Edit</a>
-<a asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
+<a asp-area="Admin" asp-controller="Municipalities" asp-action="Edit" asp-route-id="@Model.MunicipalityId" class="btn btn-primary">Edit</a>
+<a asp-area="Admin" asp-controller="Municipalities" asp-action="Index" class="btn btn-outline-secondary">Back to list</a>
 

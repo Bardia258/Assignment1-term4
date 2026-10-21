@@ -2,7 +2,8 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var viewModel = AuthViewModel()
-    @Environment(\.dismiss) var dismiss
+    @AppStorage("authToken") private var authToken = ""
+    @AppStorage("userEmail") private var userEmail = ""
     
     var body: some View {
         VStack(spacing: 20) {
@@ -31,6 +32,7 @@ struct RegisterView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal)
+            .disabled(viewModel.isLoading || viewModel.accountCreated)
 
             Text("Use at least 6 characters, including uppercase, lowercase, a number, and a symbol.")
                 .font(.caption)
@@ -45,15 +47,16 @@ struct RegisterView: View {
             
             Button(action: {
                 Task {
-                    if await viewModel.register() {
-                        dismiss() // Go back to login on success
+                    if let token = await viewModel.register() {
+                        userEmail = viewModel.email.trimmingCharacters(in: .whitespacesAndNewlines)
+                        authToken = token
                     }
                 }
             }) {
                 if viewModel.isLoading {
                     ProgressView().tint(.white)
                 } else {
-                    Text("Register")
+                    Text(viewModel.accountCreated ? "Finish Signing In" : "Register")
                         .fontWeight(.bold)
                 }
             }
@@ -63,7 +66,7 @@ struct RegisterView: View {
             .foregroundColor(.white)
             .cornerRadius(10)
             .padding(.horizontal)
-            .disabled(!viewModel.isRegisterValid || viewModel.isLoading)
+            .disabled((!viewModel.accountCreated && !viewModel.isRegisterValid) || viewModel.isLoading)
             
             Spacer()
         }

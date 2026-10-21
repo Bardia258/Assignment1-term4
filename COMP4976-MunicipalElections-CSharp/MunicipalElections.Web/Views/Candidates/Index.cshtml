@@ -4,25 +4,28 @@
     ViewData["Title"] = "Candidate Directory";
 }
 
-<h1 class="mb-4">Candidate Directory</h1>
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <h1 class="mb-0">Candidate Directory</h1>
+    <div class="directory-municipality-filter">
+        <label for="directory-municipality" class="form-label">Municipality</label>
+        <select id="directory-municipality" name="municipalityId" class="form-select" form="candidate-filter-form"
+                data-municipality-filter asp-items="@(new SelectList(ViewBag.Municipalities, "Id", "Name", ViewBag.CurrentMunicipality))">
+            <option value="">All Municipalities</option>
+        </select>
+    </div>
+</div>
 
 <!-- Search and Filter Form -->
-<div class="card bg-light mb-4 shadow-sm">
+<div class="card bg-body-tertiary mb-4 shadow-sm">
     <div class="card-body">
-        <form asp-action="Index" method="get" class="row g-3">
+        <form id="candidate-filter-form" asp-action="Index" method="get" class="row g-3">
+            <div class="col-md-6">
+                <label for="candidate-name" class="form-label">Search by Name</label>
+                <input id="candidate-name" type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Enter candidate name..." />
+            </div>
             <div class="col-md-4">
-                <label class="form-label">Search by Name</label>
-                <input type="text" name="searchString" value="@ViewBag.CurrentSearch" class="form-control" placeholder="Enter candidate name..." />
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Municipality</label>
-                <select name="municipalityId" class="form-select" asp-items="@(new SelectList(ViewBag.Municipalities, "Id", "Name", ViewBag.CurrentMunicipality))">
-                    <option value="">All Municipalities</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <label class="form-label">Position</label>
-                <select name="positionId" class="form-select" asp-items="@(new SelectList(ViewBag.Positions, "Id", "Name", ViewBag.CurrentPosition))">
+                <label for="candidate-position" class="form-label">Position</label>
+                <select id="candidate-position" name="positionId" class="form-select" asp-items="@(new SelectList(ViewBag.Positions, "Id", "Name", ViewBag.CurrentPosition))">
                     <option value="">All Positions</option>
                 </select>
             </div>
@@ -60,13 +63,15 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold">@candidate.Name</h5>
                         <h6 class="card-subtitle mb-2 text-primary">@candidate.PositionTitle</h6>
-                        <p class="card-text text-muted mb-1"><small>@candidate.MunicipalityName</small></p>
+                        <div class="card-text text-muted mb-2">
+                            <partial name="_MunicipalityBadge" model="@(new MunicipalElections.Web.ViewModels.MunicipalityViewModel { Name = candidate.MunicipalityName, LogoUrl = candidate.MunicipalityLogoUrl })" />
+                        </div>
                         <p class="card-text text-truncate">@candidate.Profile</p>
                     </div>
-                    <div class="card-footer bg-white border-top-7">
+                    <div class="card-footer bg-body border-top-7">
                         <a asp-action="Details" asp-controller="Candidates" asp-route-id="@candidate.Id" class="btn btn-outline-primary w-100">View Profile</a>
                     </div>
-                    <div class="card-footer bg-white border-top-7">
+                    <div class="card-footer bg-body border-top-7">
                         <a asp-action="Add" asp-controller="VotingGuide" asp-route-id="@candidate.Id" class="btn btn-success w-50">+ Add to Guide</a>
                     </div>
                 </div>

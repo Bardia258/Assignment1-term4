@@ -25,6 +25,14 @@ class AuthViewModel: ObservableObject {
     
     @Published var isLoading = false
     @Published var errorMessage: String? = nil
+    @Published private(set) var accountCreated = false
+
+    private let api: APIClient
+    private var registeredCredentials: LoginRequest?
+
+    init(api: APIClient = .shared) {
+        self.api = api
+    }
     
     private var trimmedEmail: String { email.trimmingCharacters(in: .whitespacesAndNewlines) }
 
@@ -38,36 +46,51 @@ class AuthViewModel: ObservableObject {
     }
     
     func login() async -> String? {
+        guard !isLoading else { return nil }
         isLoading = true
         errorMessage = nil
         
         defer { isLoading = false }
         do {
             // The backend accepts an email in its username field.
-            let response = try await APIClient.shared.login(LoginRequest(username: trimmedEmail, password: password))
-            guard !response.token.isEmpty else {
-                throw APIError(statusCode: 0, message: "The server did not return a login token.")
-            }
-            return response.token
+            return try await authenticate(LoginRequest(username: trimmedEmail, password: password))
         } catch {
             errorMessage = error.localizedDescription
             return nil
         }
     }
     
-    func register() async -> Bool {
+    func register() async -> String? {
+        guard !isLoading else { return nil }
         isLoading = true
         errorMessage = nil
         
         defer { isLoading = false }
         do {
-            // Use the email as the username to keep the existing form simple.
-            try await APIClient.shared.register(RegisterRequest(username: trimmedEmail, email: trimmedEmail,
-                password: password, fullName: name.trimmingCharacters(in: .whitespacesAndNewlines)))
-            return true
+            if registeredCredentials == nil {
+                // Capture the credentials before either request suspends.
+                let request = RegisterRequest(username: trimmedEmail, email: trimmedEmail,
+                    password: password, fullName: name.trimmingCharacters(in: .whitespacesAndNewlines))
+                try await api.register(request)
+                registeredCredentials = LoginRequest(username: request.username, password: request.password)
+                accountCreated = true
+            }
+            // Retry only login if account creation succeeded but sign-in failed.
+            guard let registeredCredentials else { return nil }
+            return try await authenticate(registeredCredentials)
         } catch {
-            errorMessage = error.localizedDescription
-            return false
+            errorMessage = accountCreated
+                ? "Your account was created, but sign-in did not finish. Tap Finish Signing In to retry. \(error.localizedDescription)"
+                : error.localizedDescription
+            return nil
         }
+    }
+
+    private func authenticate(_ request: LoginRequest) async throws -> String {
+        let response = try await api.login(request)
+        guard !response.token.isEmpty else {
+            throw APIError(statusCode: 0, message: "The server did not return a login token.")
+        }
+        return response.token
     }
 }

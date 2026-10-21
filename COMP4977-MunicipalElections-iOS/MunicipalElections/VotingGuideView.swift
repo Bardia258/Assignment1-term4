@@ -43,7 +43,7 @@ struct VotingGuideView: View {
                                 Text(candidate.positionTitle)
                                     .font(.subheadline)
                                     .foregroundColor(.blue)
-                                Text("Municipality ID: \(candidate.municipalityId)")
+                                MunicipalityLabel(name: candidate.displayMunicipalityName, logoUrl: candidate.municipalityLogoUrl)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
                             }

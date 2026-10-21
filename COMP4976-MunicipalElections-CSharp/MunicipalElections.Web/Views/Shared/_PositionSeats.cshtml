@@ -1,0 +1,26 @@
+@model IReadOnlyList<MunicipalElections.Web.ViewModels.PositionViewModel>
+
+@if (Model.Count == 0)
+{
+    <p class="text-muted mb-0">No positions have been added yet.</p>
+}
+else
+{
+    <table class="table table-sm align-middle mb-0 municipality-seats">
+        <thead>
+            <tr>
+                <th scope="col">Position</th>
+                <th scope="col" class="text-end">Seats Available</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var position in Model)
+            {
+                <tr>
+                    <th scope="row" class="fw-normal">@position.Name</th>
+                    <td class="text-end">@position.SeatsAvailable</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

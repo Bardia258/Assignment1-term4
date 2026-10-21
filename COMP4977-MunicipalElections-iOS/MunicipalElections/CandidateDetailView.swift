@@ -42,6 +42,13 @@ struct CandidateDetailView: View {
                     Text(candidate.positionTitle)
                         .font(.title3)
                         .foregroundColor(.blue)
+
+                    Text("Municipality")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    MunicipalityLabel(name: candidate.displayMunicipalityName,
+                                      logoUrl: candidate.municipalityLogoUrl, size: 44)
+                        .font(.headline)
                 }
                 .padding(.horizontal)
                 
@@ -119,7 +126,7 @@ struct CandidateDetailView: View {
 
 #Preview {
     NavigationStack {
-        CandidateDetailView(candidate: Candidate(id: 1, name: "John Doe", profile: "Experienced leader with 10 years of city council experience.", photoUrl: nil, website: "johndoe.ca", email: "john@example.com", positionTitle: "Mayor", municipalityId: 1))
+        CandidateDetailView(candidate: Candidate(id: 1, name: "John Doe", profile: "Experienced leader with 10 years of city council experience.", photoUrl: nil, website: "johndoe.ca", email: "john@example.com", positionTitle: "Mayor", municipalityId: 1, municipalityName: "Pitt Meadows", municipality: nil))
             .environmentObject(VotingGuideManager())
     }
 }

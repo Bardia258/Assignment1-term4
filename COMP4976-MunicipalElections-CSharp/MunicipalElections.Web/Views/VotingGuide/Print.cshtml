@@ -55,7 +55,9 @@
                         <div class="@(string.IsNullOrEmpty(candidate.PhotoUrl) ? "col-12" : "col-10")">
                             <h3 class="fw-bold mb-1">@candidate.Name</h3>
                             <h5 class="text-primary mb-2">@candidate.PositionTitle</h5>
-                            <p class="mb-0"><strong>Municipality:</strong> @candidate.MunicipalityName</p>
+                            <div class="mb-1">
+                                <partial name="_MunicipalityBadge" model="@(new MunicipalElections.Web.ViewModels.MunicipalityViewModel { Name = candidate.MunicipalityName, LogoUrl = candidate.MunicipalityLogoUrl })" />
+                            </div>
                             <p class="mb-0"><strong>Election Date:</strong> @candidate.MunicipalityElectionDate.ToString("MMMM dd, yyyy")</p>
                         </div>
                     </div>

@@ -6,9 +6,9 @@
 <div class="card card-body mb-3"><partial name="_Details" model="Model" /></div>
 <p class="fw-bold">Are you sure you want to delete this record?</p>
 
-<form method="post" class="d-flex gap-2">
+<form asp-area="Admin" asp-controller="Positions" asp-action="Delete" asp-route-id="@(ViewContext.RouteData.Values["id"])" method="post" class="d-flex gap-2">
     <input type="hidden" name="revision" value="@Model.Revision" />
     <button type="submit" class="btn btn-danger">Confirm delete</button>
-    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    <a asp-area="Admin" asp-controller="Positions" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
 </form>
 

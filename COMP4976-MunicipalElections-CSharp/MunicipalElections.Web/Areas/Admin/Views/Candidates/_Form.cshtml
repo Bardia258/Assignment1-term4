@@ -3,7 +3,7 @@
 <input asp-for="Revision" type="hidden" />
 <div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name"></span></div>
 <div class="row">
-    <div class="col-sm-6 mb-3"><label asp-for="MunicipalityId" class="form-label"></label><select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-select" data-positions-url="@Url.Action("PositionOptions", "Candidates")"><option value="">Choose a municipality</option></select><span asp-validation-for="MunicipalityId"></span></div>
+    <div class="col-sm-6 mb-3"><label asp-for="MunicipalityId" class="form-label"></label><select asp-for="MunicipalityId" asp-items="Model.Municipalities" class="form-select" data-positions-url="@Url.Action("PositionOptions", "Candidates", new { area = "Admin" })"><option value="">Choose a municipality</option></select><span asp-validation-for="MunicipalityId"></span></div>
     <div class="col-sm-6 mb-3"><label asp-for="PositionId" class="form-label"></label><select asp-for="PositionId" asp-items="Model.Positions" class="form-select"><option value="">Choose a position</option></select><span asp-validation-for="PositionId"></span><div id="position-status" class="form-text" role="status"></div></div>
 </div>
 <div class="mb-3"><label asp-for="Profile" class="form-label"></label><textarea asp-for="Profile" class="form-control" rows="7"></textarea><span asp-validation-for="Profile"></span></div>

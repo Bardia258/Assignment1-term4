@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center mb-5 bg-light p-5 rounded shadow-sm">
+<div class="text-center mb-5 bg-body-tertiary p-5 rounded shadow-sm">
     <h1 class="display-4 fw-bold text-primary">Your Municipal Election Guide</h1>
     <p class="lead">Prepare for the October 17, 2026 election. Review candidates and build your personalized voting guide.</p>
     <a class="btn btn-primary btn-lg" asp-controller="Municipalities" asp-action="Index">View Municipalities</a>
@@ -14,16 +14,6 @@
 <div class="row">
     @foreach (var muni in Model)
     {
-        <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title fw-bold">@muni.Name</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@muni.Province</h6>
-                    <p class="card-text">@muni.Description</p>
-                    <p class="text-danger fw-bold">Election: @muni.ElectionDate.ToString("MMMM dd, yyyy")</p>
-                    <a asp-controller="Municipalities" asp-action="Details" asp-route-id="@muni.Id" class="btn btn-outline-primary">View Candidates</a>
-                </div>
-            </div>
-        </div>
+        <partial name="_MunicipalityCard" model="muni" />
     }
 </div>

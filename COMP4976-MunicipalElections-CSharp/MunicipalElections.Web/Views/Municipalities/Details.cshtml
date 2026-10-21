@@ -2,11 +2,14 @@
 
 @{ ViewData["Title"] = Model.Name; }
 
-<div class="bg-light p-4 rounded shadow-sm mb-4">
-    <h1 class="display-5 fw-bold text-primary">@Model.Name</h1>
+<div class="bg-body-tertiary p-4 rounded shadow-sm mb-4 municipality-detail-header">
+    <h1 class="display-5 fw-bold text-primary"><partial name="_MunicipalityBadge" model="Model" /></h1>
     <h5 class="text-muted">@Model.Province</h5>
     <p class="lead mt-3">@Model.Description</p>
     <p class="text-danger fw-bold mb-0">Election Date: @Model.ElectionDate.ToString("MMMM dd, yyyy")</p>
+    <div class="mt-4 municipality-position-summary">
+        <partial name="_PositionSeats" model="Model.Positions" />
+    </div>
 </div>
 
 <h3 class="mb-4">Candidates for @Model.Name</h3>
@@ -35,9 +38,12 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold">@candidate.Name</h5>
                         <h6 class="card-subtitle mb-2 text-primary">@candidate.PositionTitle</h6>
+                        <div class="text-muted mb-2">
+                            <partial name="_MunicipalityBadge" model="Model" />
+                        </div>
                         <p class="card-text text-truncate">@candidate.Profile</p>
                     </div>
-                    <div class="card-footer bg-white border-top-0 d-flex justify-content-between">
+                    <div class="card-footer bg-body border-top-0 d-flex justify-content-between">
                         <a asp-controller="Candidates" asp-action="Details" asp-route-id="@candidate.Id" class="btn btn-outline-primary w-50 me-2">View Profile</a>
                         <a asp-controller="VotingGuide" asp-action="Add" asp-route-id="@candidate.Id" class="btn btn-success w-50">+ Add to Guide</a>
                     </div>

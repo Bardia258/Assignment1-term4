@@ -30,7 +30,15 @@
         <div class="card shadow-sm">
             <div class="card-body">
                 <h1 class="card-title fw-bold text-primary">@Model.Name</h1>
-                <h4 class="card-subtitle mb-3 text-muted">@Model.PositionTitle - @Model.MunicipalityName</h4>
+                <h4 class="card-subtitle mb-3 text-muted">@Model.PositionTitle</h4>
+                <div class="mb-3">
+                    <span class="d-block text-muted small mb-1">Municipality</span>
+                    <partial name="_MunicipalityBadge" model="@(new MunicipalElections.Web.ViewModels.MunicipalityViewModel { Name = Model.MunicipalityName, LogoUrl = Model.MunicipalityLogoUrl })" />
+                </div>
+                <p class="text-muted mb-0">
+                    <strong>Profile created:</strong>
+                    <time datetime="@Model.DateCreated.ToString("yyyy-MM-dd")">@Model.DateCreated.ToString("MMMM dd, yyyy")</time>
+                </p>
                 
                 <hr />
                 

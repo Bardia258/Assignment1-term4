@@ -1,31 +1,34 @@
 @inject AdminAccessService AdminAccess
 @{ var admin = await AdminAccess.GetAccessAsync(User); }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
 <head>
     <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>@ViewData["Title"] — Municipal Elections Administration</title>
+    <script src="~/js/theme.js" asp-append-version="true"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/admin.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
 </head>
-<body class="bg-light">
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4"><div class="container">
+<body class="bg-body-tertiary">
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom mb-4"><div class="container">
     <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">Municipal Elections</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav" aria-controls="adminNav" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
     <div class="collapse navbar-collapse" id="adminNav"><div class="navbar-nav me-auto">
     @if (admin is not null)
     {
-        <a class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a>
-        @if (admin.IsSuperAdmin) { <a class="nav-link" asp-controller="Municipalities" asp-action="Index">Municipalities</a> }
-        <a class="nav-link" asp-controller="Positions" asp-action="Index">Positions</a>
-        <a class="nav-link" asp-controller="Candidates" asp-action="Index">Candidates</a>
+        <a asp-area="Admin" class="nav-link" asp-controller="Home" asp-action="Index">Dashboard</a>
+        @if (admin.IsSuperAdmin) { <a asp-area="Admin" class="nav-link" asp-controller="Municipalities" asp-action="Index">Municipalities</a> }
+        <a asp-area="Admin" class="nav-link" asp-controller="Positions" asp-action="Index">Positions</a>
+        <a asp-area="Admin" class="nav-link" asp-controller="Candidates" asp-action="Index">Candidates</a>
     }
     <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Public website</a>
     </div>
+    <div class="me-3 my-2 my-lg-0"><partial name="/Views/Shared/_ThemeToggle.cshtml" /></div>
     @if (admin is not null)
     {
         <span class="navbar-text me-3">@admin.Username · @admin.Role</span>
-        <form asp-controller="Account" asp-action="Logout" method="post"><button class="btn btn-outline-light btn-sm">Log out</button></form>
+        <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post"><button class="btn btn-outline-secondary btn-sm">Log out</button></form>
     }
     </div>
 </div></nav>

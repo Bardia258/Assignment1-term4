@@ -39,7 +39,7 @@ public sealed class PositionsController(ApplicationDbContext db, AdminAccessServ
         {
             var item = new Position { Name = model.Name.Trim(), MunicipalityId = model.MunicipalityId, SeatsAvailable = model.SeatsAvailable };
             Db.Add(item);
-            if (await PersistAsync(item)) return RedirectToAction(nameof(Details), new { id = item.PositionId });
+            if (await PersistAsync(item)) return RedirectToAction(nameof(Details), "Positions", new { area = "Admin", id = item.PositionId });
         }
         model.Municipalities = await MunicipalityOptionsAsync();
         return View(model);
@@ -64,7 +64,7 @@ public sealed class PositionsController(ApplicationDbContext db, AdminAccessServ
         if (ModelState.IsValid)
         {
             item.Name = model.Name.Trim(); item.SeatsAvailable = model.SeatsAvailable;
-            if (await PersistAsync(item, model.Revision)) return RedirectToAction(nameof(Details), new { id });
+            if (await PersistAsync(item, model.Revision)) return RedirectToAction(nameof(Details), "Positions", new { area = "Admin", id });
         }
         model.Municipalities = await MunicipalityOptionsAsync();
         return View(model);
@@ -89,7 +89,7 @@ public sealed class PositionsController(ApplicationDbContext db, AdminAccessServ
         }
         Db.Remove(item);
         if (!await PersistAsync(item, revision)) return View("Delete", item);
-        return RedirectToAction(nameof(Index));
+        return RedirectToAction(nameof(Index), "Positions", new { area = "Admin" });
     }
     private async Task ValidateAsync(PositionInput model, int id = 0)
     {

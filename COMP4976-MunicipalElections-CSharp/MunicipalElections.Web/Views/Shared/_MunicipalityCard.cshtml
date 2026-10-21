@@ -1,0 +1,18 @@
+@model MunicipalElections.Web.ViewModels.MunicipalityViewModel
+
+<div class="col-md-4 mb-4">
+    <div class="card h-100 shadow-sm municipality-card">
+        <div class="card-body d-flex flex-column">
+            <h5 class="card-title fw-bold"><partial name="_MunicipalityBadge" model="Model" /></h5>
+            <h6 class="card-subtitle mb-2 text-muted">@Model.Province</h6>
+            <p class="card-text">@Model.Description</p>
+            <p class="text-danger fw-bold">Election: @Model.ElectionDate.ToString("MMMM dd, yyyy")</p>
+            <div class="mb-3">
+                <partial name="_PositionSeats" model="Model.Positions" />
+            </div>
+            <div class="mt-auto">
+                <a asp-controller="Municipalities" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-outline-primary">View Candidates</a>
+            </div>
+        </div>
+    </div>
+</div>

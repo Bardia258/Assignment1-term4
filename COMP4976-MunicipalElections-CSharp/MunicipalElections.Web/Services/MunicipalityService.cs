@@ -10,18 +10,23 @@ public class MunicipalityService(ApplicationDbContext context, IImageStorage ima
     private MunicipalityViewModel Map(Municipality m) => new()
     {
         Id = m.MunicipalityId, Name = m.Name, Province = m.Province, ElectionDate = m.ElectionDate,
-        Description = m.Description, LogoUrl = images.Url(m.LogoFileName, "logos") ?? string.Empty
+        Description = m.Description, LogoUrl = images.Url(m.LogoFileName, "logos") ?? string.Empty,
+        Positions = m.Positions.OrderBy(p => p.PositionId).Select(p => new PositionViewModel
+        {
+            Id = p.PositionId, Name = p.Name, SeatsAvailable = p.SeatsAvailable
+        }).ToList()
     };
     public async Task<IEnumerable<MunicipalityViewModel>> GetAllMunicipalitiesAsync() =>
-        (await context.Municipalities.AsNoTracking().OrderBy(m => m.Name).ToListAsync()).Select(Map);
+        (await context.Municipalities.AsNoTracking().Include(m => m.Positions).OrderBy(m => m.Name).ToListAsync()).Select(Map);
     public async Task<MunicipalityViewModel?> GetMunicipalityByIdAsync(int id)
     {
-        var municipality = await context.Municipalities.AsNoTracking().SingleOrDefaultAsync(m => m.MunicipalityId == id);
+        var municipality = await context.Municipalities.AsNoTracking().Include(m => m.Positions)
+            .SingleOrDefaultAsync(m => m.MunicipalityId == id);
         return municipality is null ? null : Map(municipality);
     }
     public async Task<IEnumerable<PositionViewModel>> GetAllPositionsAsync() =>
         await context.Positions.AsNoTracking().OrderBy(p => p.Name).Select(p => new PositionViewModel
         {
-            Id = p.PositionId, Name = p.Name, SeatsaVAILABLE = p.SeatsAvailable
+            Id = p.PositionId, Name = p.Name, SeatsAvailable = p.SeatsAvailable
         }).ToListAsync();
 }

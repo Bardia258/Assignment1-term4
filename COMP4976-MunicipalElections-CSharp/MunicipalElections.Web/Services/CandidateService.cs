@@ -15,7 +15,9 @@ public class CandidateService(ApplicationDbContext context, IImageStorage images
         Website = c.Website ?? string.Empty, Email = c.Email ?? string.Empty,
         PositionId = c.PositionId, PositionTitle = c.Position.Name,
         MunicipalityId = c.MunicipalityId, MunicipalityName = c.Municipality.Name,
-        MunicipalityElectionDate = c.Municipality.ElectionDate
+        MunicipalityLogoUrl = images.Url(c.Municipality.LogoFileName, "logos") ?? string.Empty,
+        MunicipalityElectionDate = c.Municipality.ElectionDate,
+        DateCreated = c.DateCreated
     };
     public async Task<IEnumerable<CandidateViewModel>> GetCandidatesByMunicipalityAsync(int municipalityId) =>
         (await Query.Where(c => c.MunicipalityId == municipalityId).OrderBy(c => c.Name).ToListAsync()).Select(Map);

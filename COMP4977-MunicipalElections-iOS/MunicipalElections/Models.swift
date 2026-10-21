@@ -30,6 +30,14 @@ struct Candidate: Identifiable, Codable {
     let email: String?      // Matches DB "Email"
     let positionTitle: String
     let municipalityId: Int
+    let municipalityName: String?
+    let municipality: Municipality?
+
+    var displayMunicipalityName: String {
+        municipality?.name ?? municipalityName ?? "Municipality unavailable"
+    }
+
+    var municipalityLogoUrl: String? { municipality?.logoUrl }
 }
 
 struct SavedCandidate: Decodable, Identifiable {

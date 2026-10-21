@@ -10,7 +10,9 @@ final class MunicipalElectionsTests: XCTestCase {
     private static let candidateJSON = """
     {"id":42,"name":"Alex Lee","profile":"Community advocate","photoUrl":"/uploads/candidates/photo.jpg",
      "website":null,"email":"alex@example.com","positionTitle":"Mayor","municipalityId":7,
-     "municipalityName":"Pitt Meadows","dateCreated":"2026-10-17T00:00:00","positionId":3}
+     "municipalityName":"Pitt Meadows","dateCreated":"2026-10-17T00:00:00","positionId":3,
+     "municipality":{"id":7,"name":"Pitt Meadows","province":"BC","electionDate":"2026-10-17T00:00:00",
+                     "description":"City of Pitt Meadows","logoUrl":"/uploads/logos/pitt-meadows.png"}}
     """
 
     override func setUpWithError() throws {
@@ -49,6 +51,9 @@ final class MunicipalElectionsTests: XCTestCase {
         XCTAssertEqual(municipalities.first?.formattedElectionDate, "Oct 17, 2026")
         let candidates = try await client.fetchAllCandidates()
         XCTAssertEqual(candidates.first?.id, 42)
+        XCTAssertEqual(candidates.first?.displayMunicipalityName, "Pitt Meadows")
+        XCTAssertEqual(APIClient.imageURL(for: candidates.first?.municipalityLogoUrl)?.absoluteString,
+                       APIClient.baseURL.absoluteString + "uploads/logos/pitt-meadows.png")
         XCTAssertEqual(APIClient.imageURL(for: candidates.first?.photoUrl)?.absoluteString,
                        APIClient.baseURL.absoluteString + "uploads/candidates/photo.jpg")
         XCTAssertNil(APIClient.imageURL(for: nil))
@@ -64,6 +69,61 @@ final class MunicipalElectionsTests: XCTestCase {
         }
         let candidates = try await client.fetchCandidates(for: 7)
         XCTAssertTrue(candidates.isEmpty)
+    }
+
+    @MainActor
+    func testDirectoryCombinesMunicipalitySelectionAndNameSearch() async throws {
+        let otherCandidate = Self.candidateJSON
+            .replacingOccurrences(of: "\"id\":42", with: "\"id\":43")
+            .replacingOccurrences(of: "\"id\":7", with: "\"id\":8")
+            .replacingOccurrences(of: "\"municipalityId\":7", with: "\"municipalityId\":8")
+            .replacingOccurrences(of: "Pitt Meadows", with: "Maple Ridge")
+            .replacingOccurrences(of: "Alex Lee", with: "Sam Chen")
+        StubURLProtocol.handler = { request in
+            if request.url?.path == "/api/municipalities" {
+                return (200, Data("""
+                [{"id":7,"name":"Pitt Meadows","province":"BC","electionDate":"2026-10-17T00:00:00","description":"","logoUrl":null},
+                 {"id":8,"name":"Maple Ridge","province":"BC","electionDate":"2026-10-17T00:00:00","description":"","logoUrl":null}]
+                """.utf8))
+            }
+            let query = URLComponents(url: try XCTUnwrap(request.url), resolvingAgainstBaseURL: true)?.queryItems
+            switch query?.first(where: { $0.name == "municipalityId" })?.value {
+            case "7": return (200, Data("[\(Self.candidateJSON)]".utf8))
+            case "8": return (200, Data("[\(otherCandidate)]".utf8))
+            default: return (200, Data("[\(Self.candidateJSON),\(otherCandidate)]".utf8))
+            }
+        }
+        let viewModel = CandidateDirectoryViewModel(api: client)
+        await viewModel.loadMunicipalities()
+        await viewModel.fetchCandidates()
+        XCTAssertEqual(viewModel.municipalities.count, 2)
+        XCTAssertEqual(viewModel.filteredCandidates.count, 2)
+
+        viewModel.selectedMunicipalityId = 7
+        await viewModel.fetchCandidates()
+        XCTAssertEqual(viewModel.selectedMunicipalityName, "Pitt Meadows")
+        XCTAssertEqual(viewModel.filteredCandidates.map(\.id), [42])
+        viewModel.searchText = "alex"
+        XCTAssertEqual(viewModel.filteredCandidates.count, 1)
+
+        viewModel.selectedMunicipalityId = 8
+        await viewModel.fetchCandidates()
+        XCTAssertTrue(viewModel.filteredCandidates.isEmpty)
+        viewModel.searchText = ""
+        XCTAssertEqual(viewModel.filteredCandidates.map(\.id), [43])
+
+        viewModel.selectedMunicipalityId = nil
+        await viewModel.fetchCandidates()
+        XCTAssertEqual(viewModel.selectedMunicipalityName, "All Municipalities")
+        XCTAssertEqual(viewModel.filteredCandidates.count, 2)
+    }
+
+    func testCandidateWithoutNestedMunicipalityKeepsNameAndHasNoLogo() throws {
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(Self.candidateJSON.utf8)) as? [String: Any])
+        json.removeValue(forKey: "municipality")
+        let candidate = try JSONDecoder().decode(Candidate.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(candidate.displayMunicipalityName, "Pitt Meadows")
+        XCTAssertNil(candidate.municipalityLogoUrl)
     }
 
     func testLoginSendsUsernameAndReturnsServerToken() async throws {
@@ -93,6 +153,84 @@ final class MunicipalElectionsTests: XCTestCase {
         }
         try await client.register(RegisterRequest(username: "voter@example.com", email: "voter@example.com",
                                                    password: "Password1!", fullName: "Alex Lee"))
+    }
+
+    @MainActor
+    func testRegistrationAutomaticallyLogsInWithTheSameCredentials() async throws {
+        var routes: [String] = []
+        StubURLProtocol.handler = { request in
+            let path = try XCTUnwrap(request.url?.path)
+            routes.append(path)
+            let body = try Self.jsonBody(request)
+            XCTAssertEqual(body["username"] as? String, "new-voter@example.com")
+            XCTAssertEqual(body["password"] as? String, "Password1!")
+            if path == "/api/auth/register" {
+                XCTAssertEqual(body["fullName"] as? String, "New Voter")
+                return (201, Data(#"{"id":"new-user","username":"new-voter@example.com"}"#.utf8))
+            }
+            XCTAssertEqual(path, "/api/auth/login")
+            return (200, Data(#"{"token":"new-account-token"}"#.utf8))
+        }
+        let viewModel = AuthViewModel(api: client)
+        viewModel.name = "New Voter"
+        viewModel.email = "  new-voter@example.com  "
+        viewModel.password = "Password1!"
+        let token = await viewModel.register()
+        XCTAssertEqual(token, "new-account-token")
+        XCTAssertEqual(routes, ["/api/auth/register", "/api/auth/login"])
+        XCTAssertTrue(viewModel.accountCreated)
+        XCTAssertNil(viewModel.errorMessage)
+        XCTAssertFalse(viewModel.isLoading)
+    }
+
+    @MainActor
+    func testFailedAutomaticLoginCanRetryWithoutRegisteringAgain() async throws {
+        var registrations = 0
+        var logins = 0
+        StubURLProtocol.handler = { request in
+            if request.url?.path == "/api/auth/register" {
+                registrations += 1
+                return (201, Data(#"{"id":"new-user","username":"voter@example.com"}"#.utf8))
+            }
+            XCTAssertEqual(request.url?.path, "/api/auth/login")
+            let body = try Self.jsonBody(request)
+            XCTAssertEqual(body["username"] as? String, "voter@example.com")
+            XCTAssertEqual(body["password"] as? String, "Password1!")
+            logins += 1
+            if logins == 1 {
+                return (503, Data(#"{"message":"Temporary sign-in issue."}"#.utf8))
+            }
+            return (200, Data(#"{"token":"retry-token"}"#.utf8))
+        }
+        let viewModel = AuthViewModel(api: client)
+        viewModel.name = "Voter"
+        viewModel.email = "voter@example.com"
+        viewModel.password = "Password1!"
+        let firstToken = await viewModel.register()
+        XCTAssertNil(firstToken)
+        XCTAssertTrue(viewModel.accountCreated)
+        XCTAssertTrue(viewModel.errorMessage?.contains("Your account was created") == true)
+        let retryToken = await viewModel.register()
+        XCTAssertEqual(retryToken, "retry-token")
+        XCTAssertEqual(registrations, 1)
+        XCTAssertEqual(logins, 2)
+    }
+
+    @MainActor
+    func testFailedRegistrationDoesNotAttemptLogin() async throws {
+        StubURLProtocol.handler = { request in
+            XCTAssertEqual(request.url?.path, "/api/auth/register")
+            return (400, Data(#"{"errors":{"Email":["This email is already registered."]}}"#.utf8))
+        }
+        let viewModel = AuthViewModel(api: client)
+        viewModel.name = "Voter"
+        viewModel.email = "voter@example.com"
+        viewModel.password = "Password1!"
+        let token = await viewModel.register()
+        XCTAssertNil(token)
+        XCTAssertFalse(viewModel.accountCreated)
+        XCTAssertEqual(viewModel.errorMessage, "This email is already registered.")
+        XCTAssertFalse(viewModel.isLoading)
     }
 
     func testSavedCandidatesUseBearerTokenAndDeleteSavedRecordID() async throws {
