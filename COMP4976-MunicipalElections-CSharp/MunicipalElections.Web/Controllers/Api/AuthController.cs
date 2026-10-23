@@ -34,7 +34,7 @@ public sealed class AuthController(UserManager<ApplicationUser> users,
             UserName = request.Username.Trim(), Email = request.Email.Trim(),
             FullName = request.FullName?.Trim(), LockoutEnabled = true
         };
-        // Request DTO deliberately cannot bind roles, municipality assignments or confirmation flags.
+       
         var result = await users.CreateAsync(user, request.Password);
         if (!result.Succeeded)
         {
